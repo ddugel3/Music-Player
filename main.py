@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import (QWidget, QPushButton,
 from PyQt5.QtCore import *
 from PyQt5 import QtCore,QtGui
 
+#volume에서 handle 크기 조정
 class SliderProxyStyle(QProxyStyle):
     def pixelMetric(self, metric, option, widget):
         if metric == QStyle.PM_SliderThickness:
@@ -12,6 +13,7 @@ class SliderProxyStyle(QProxyStyle):
         elif metric == QStyle.PM_SliderLength:
             return 40
         return super().pixelMetric(metric, option, widget)
+
 class Main(QWidget):
 
     def __init__(self):
@@ -30,49 +32,55 @@ class Main(QWidget):
         title.setFont(font)
         title.setMaxLength(50)
 
-        replaybutton = QPushButton() #repeat
-        replaybutton.setIcon(QtGui.QIcon('repeat.png'))
+        # repeat button
+        replaybutton = QPushButton()
+        replaybutton.setIcon(QtGui.QIcon('../AD-Project/icon/repeat.png'))
         replaybutton.setIconSize(QtCore.QSize(35,35))
-        randombutton = QPushButton() #random
-        randombutton.setIcon(QtGui.QIcon('shuffle.png'))
+
+        # random button
+        randombutton = QPushButton()
+        randombutton.setIcon(QtGui.QIcon('../AD-Project/icon/shuffle.png'))
         randombutton.setIconSize(QtCore.QSize(35,35))
 
-        self.playbar = QProgressBar(self) #playbar
+        # playbar 재생정
+        self.playbar = QProgressBar(self)
         self.playbar.setFormat(" ")
         self.playbar.setFont(QtGui.QFont('Arial',22))
         self.playbar.setStyleSheet("QProgressBar::chunk {background-color:rgb(0,0,0)}")
 
 
         self.playbutton = QPushButton() #playbutton
-        self.playbutton.setIcon(QtGui.QIcon('play.png'))
+        self.playbutton.setIcon(QtGui.QIcon('../AD-Project/icon/play.png'))
         self.playbutton.setIconSize(QtCore.QSize(60,60))
-        self.playbutton.clicked.connect(self.doAction)
+        self.playbutton.clicked.connect(self.doAction) #playbutton클릭에 따른 signal
         self.timer = QBasicTimer()
         self.step = 0
 
+        #next button
         nextbutton = QPushButton()
-        nextbutton.setIcon(QtGui.QIcon('next.png'))
+        nextbutton.setIcon(QtGui.QIcon('../AD-Project/icon/next.png'))
         nextbutton.setIconSize(QtCore.QSize(80,60))
+
+        #back button
         backbutton = QPushButton()
-        backbutton.setIcon(QtGui.QIcon('back.png'))
+        backbutton.setIcon(QtGui.QIcon('../AD-Project/icon/back.png'))
         backbutton.setIconSize(QtCore.QSize(80,60))
 
+        #out button
         outbutton = QPushButton()
-        outbutton.setIcon(QtGui.QIcon('out.png'))
+        outbutton.setIcon(QtGui.QIcon('../AD-Project/icon/out.png'))
         outbutton.setIconSize(QtCore.QSize(50,50))
 
+        # volume
         self.volume = QSlider(QtCore.Qt.Vertical)
         style = SliderProxyStyle(self.volume.style())
         self.volume.setStyle(style)
-        self.volume.setStyleSheet("QSlider:add-page:vertical{"
-                                  "background:rgb(255,0,0)}")
-        self.volume.setStyleSheet("QSlider:sub-page:vertical{"
-                                  "background:rgb(0,255,0)}")
-        self.volume.setStyleSheet("QSlider::handle:vertical{"
+        self.volume.setStyleSheet("QSlider::handle:vertical{" 
                                   "background:rgb(0,0,0)}")
 
+        # lyricsbutton
         lyricsbutton = QPushButton()
-        lyricsbutton.setIcon(QtGui.QIcon('lyrics.png'))
+        lyricsbutton.setIcon(QtGui.QIcon('../AD-Project/icon/lyrics.png'))
         lyricsbutton.setIconSize(QtCore.QSize(50,50))
 
         #layout
@@ -80,52 +88,44 @@ class Main(QWidget):
         vv2box = QVBoxLayout()
 
         vv1_v1box = QVBoxLayout()
-        vv1_h0box = QHBoxLayout()
         vv1_h1box = QHBoxLayout()
         vv1_h2box = QHBoxLayout()
+        vv1_h3box = QHBoxLayout()
 
+        #screen 띄우는 위치
         vv1box.addLayout(vv1_v1box)
         vv1_v1box.addWidget(screen)
 
-        vv1box.addLayout(vv1_h0box)
-        vv1_h0box.addStretch(1)
-        vv1_h0box.addWidget(title)
-        vv1_h0box.addStretch(1)
-
+        #곡제목 위치
         vv1box.addLayout(vv1_h1box)
-        vv1_h1box.addWidget(replaybutton)
-        vv1_h1box.addWidget(self.playbar)
-        vv1_h1box.addWidget(randombutton)
+        vv1_h1box.addStretch(1)
+        vv1_h1box.addWidget(title)
+        vv1_h1box.addStretch(1)
 
-
+        #replay, playbar, random 버튼 위치
         vv1box.addLayout(vv1_h2box)
-        vv1_h2box.addStretch(1)
-        vv1_h2box.addWidget(backbutton)
-        vv1_h2box.addWidget(self.playbutton)
-        vv1_h2box.addWidget(nextbutton)
-        vv1_h2box.addStretch(1)
+        vv1_h2box.addWidget(replaybutton)
+        vv1_h2box.addWidget(self.playbar)
+        vv1_h2box.addWidget(randombutton)
 
-        vv2_v1box = QVBoxLayout()
-        vv2_v2box = QVBoxLayout()
-        vv2_v3box = QVBoxLayout()
-        vv2_v4box = QVBoxLayout()
+        #back,play,next 버튼
+        vv1box.addLayout(vv1_h3box)
+        vv1_h3box.addStretch(1)
+        vv1_h3box.addWidget(backbutton)
+        vv1_h3box.addWidget(self.playbutton)
+        vv1_h3box.addWidget(nextbutton)
+        vv1_h3box.addStretch(1)
 
-        vv2box.addLayout(vv2_v1box)
-        vv2_v1box.addWidget(outbutton)
+        #out, volume, lyrics 버튼
+        vv2box.addWidget(outbutton)
+        vv2box.addWidget(self.volume)
+        vv2box.addWidget(lyricsbutton)
 
-        vv2box.addLayout(vv2_v4box)
+        Mainlayout = QHBoxLayout()
+        Mainlayout.addLayout(vv1box)
+        Mainlayout.addLayout(vv2box)
 
-        vv2box.addLayout(vv2_v2box)
-        vv2_v2box.addWidget(self.volume)
-
-        vv2box.addLayout(vv2_v3box)
-        vv2_v3box.addWidget(lyricsbutton)
-
-        mainlayout = QHBoxLayout()
-        mainlayout.addLayout(vv1box)
-        mainlayout.addLayout(vv2box)
-
-        self.setLayout(mainlayout)
+        self.setLayout(Mainlayout)
 
         self.setWindowTitle('main')
         self.setGeometry(500, 200, 1000, 700)
@@ -133,20 +133,22 @@ class Main(QWidget):
 
     def timerEvent(self, e):
         if self.step >= 100:
-            self.timer.stop()
+            self.timer.stop() #재생바 종료
             return
 
         self.step = self.step + 1
-        self.playbar.setValue(self.step)
+        self.playbar.setValue(self.step) #재생바의 재생정도를 step값을 기준으로 함.
 
+
+    #playbutton 누를때 아이콘 변경
     def doAction(self):
         if self.timer.isActive():
             self.timer.stop()
-            self.playbutton.setIcon(QtGui.QIcon('play.png'))
+            self.playbutton.setIcon(QtGui.QIcon('../AD-Project/icon/play.png'))
             self.playbutton.setIconSize(QtCore.QSize(60,60))
         else:
             self.timer.start(100, self)
-            self.playbutton.setIcon(QtGui.QIcon('stop.png'))
+            self.playbutton.setIcon(QtGui.QIcon('../AD-Project/icon/stop.png'))
             self.playbutton.setIconSize(QtCore.QSize(60,60))
 
 
