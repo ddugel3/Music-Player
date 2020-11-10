@@ -12,6 +12,8 @@ class SliderProxyStyle(QProxyStyle):
         elif metric == QStyle.PM_SliderLength:
             return 40
         return super().pixelMetric(metric, option, widget)
+
+
 class Main(QWidget):
 
     def __init__(self):
