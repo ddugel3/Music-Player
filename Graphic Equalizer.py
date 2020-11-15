@@ -40,6 +40,7 @@ while True:
             starty = screen_start_y - j * int_y
             cv.rectangle(img, (startx, starty), (startx + rect_w, starty + rect_h), rgbcode, thickness)
 
+
     cv.imshow("drawimg",img)
     cv.waitKey(250)
 
