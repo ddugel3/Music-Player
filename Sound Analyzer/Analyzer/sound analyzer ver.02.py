@@ -1,9 +1,12 @@
+import os
 import numpy as np
 import librosa, librosa.display
 import matplotlib.pyplot as plt
 FIG_SIZE = (15,10)
 
 file = "../../music/Piano-melody_1.wav"
+(file_dir, file_id) = os.path.split(file)
+
 sig, sr = librosa.load(file, sr=22050)
 print(sig,sig.shape)
 
@@ -14,6 +17,7 @@ plt.xlabel("Time (s)")
 plt.ylabel("Amplitude")
 plt.title("Waveform")
 fft = np.fft.fft(sig)
+plt.savefig("../Analyzed/ver.02/"+file_id+'_Waveform'+'.png')
 
 #-------------------------------------------------------------------#
 
@@ -30,6 +34,7 @@ plt.plot(left_f, left_spectrum)
 plt.xlabel("Frequency")
 plt.ylabel("Magnitude")
 plt.title("Power spectrum")
+plt.savefig("../Analyzed/ver.02/"+file_id+'_Frequency-Spectrum'+'.png')
 
 #-------------------------------------------------------------------#
 
@@ -52,6 +57,7 @@ plt.xlabel("Time")
 plt.ylabel("Frequency")
 plt.colorbar(format="%+2.0f dB")
 plt.title("Spectrogram (dB)")
+plt.savefig("../Analyzed/ver.02/"+file_id+'_Spectrogram'+'.png')
 
 
 plt.show()

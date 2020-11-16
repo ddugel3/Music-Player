@@ -16,4 +16,6 @@ ax.plot(time, y, color = 'b', label='speech waveform')
 ax.set_ylabel("Amplitude") # y 축
 ax.set_xlabel("Time [s]") # x 축
 
+plt.savefig("../Analyzed/ver.01/"+file_id+'_Waveform'+'.png')
+
 plt.show()
