@@ -13,7 +13,8 @@ class SliderProxyStyle(QProxyStyle):
         elif metric == QStyle.PM_SliderLength:
             return 40
         return super().pixelMetric(metric, option, widget)
-
+        main
+        
 class Main(QWidget):
 
     def __init__(self):
@@ -150,7 +151,6 @@ class Main(QWidget):
             self.timer.start(100, self)
             self.playbutton.setIcon(QtGui.QIcon('../AD-Project/icon/stop.png'))
             self.playbutton.setIconSize(QtCore.QSize(60,60))
-
 
 
 
