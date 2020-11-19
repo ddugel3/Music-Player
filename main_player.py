@@ -13,17 +13,13 @@ class MPlayer:
 
         self.playlist = QMediaPlaylist()
 
-    def play(self, playlists, startRow=0, option=QMediaPlaylist.Sequential):
+    def play(self, playlists, option=QMediaPlaylist.Sequential):
         if self.player.state() == QMediaPlayer.PausedState:
             self.player.play()
         else:
-            self.createPlaylist(playlists, startRow, option)
+            self.createPlaylist(playlists, option)
             self.player.setPlaylist(self.playlist)
-            self.playlist.setCurrentIndex(startRow)
             self.player.play()
-
-    def pause(self):
-        self.player.pause()
 
     def pause(self):
         self.player.pause()
@@ -37,7 +33,7 @@ class MPlayer:
     def next(self):
         self.playlist.next()
 
-    def createPlaylist(self, playlists, startRow=0, option=QMediaPlaylist.Sequential):
+    def createPlaylist(self, playlists,option=QMediaPlaylist.Sequential):
         self.playlist.clear()
 
         for path in playlists:

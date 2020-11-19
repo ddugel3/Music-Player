@@ -56,8 +56,8 @@ class Main(QWidget):
         self.playbutton = QPushButton() #playbutton
         self.playbutton.setIcon(QtGui.QIcon('../AD-Project/icon/play.png'))
         self.playbutton.setIconSize(QtCore.QSize(60,60))
-        #self.playbutton.clicked.connect(self.ButtonClicked)
-        self.playbutton.clicked.connect(self.doAction) #playbutton클릭에 따른 signal
+        self.playbutton.clicked.connect(self.ButtonClicked)
+        #self.playbutton.clicked.connect(self.doAction) #playbutton클릭에 따른 signal
         self.timer = QBasicTimer()
         self.step = 0
 
@@ -83,6 +83,9 @@ class Main(QWidget):
         self.volume.setStyle(style)
         self.volume.setStyleSheet("QSlider::handle:vertical{" 
                                   "background:rgb(0,0,0)}")
+        self.volume.setRange(0, 100)
+        self.volume.setValue(50)
+        self.volume.valueChanged[int].connect(self.volumeChanged)
 
         # lyricsbutton
         lyricsbutton = QPushButton()
@@ -138,20 +141,24 @@ class Main(QWidget):
         self.show()
 
     def Title(self):
-        files = QFileDialog.getOpenFileNames(self, 'Select one or more files to open', '','Sound (*.mp3 *.wav *.ogg *.flac *.wma)')
-        self.playlist.append(files[0])
-        Str = str(files[0]).split("/")
+        self.files = QFileDialog.getOpenFileNames(self, 'Select one or more files to open', '','Sound (*.mp3 *.wav *.ogg *.flac *.wma)')
+        Str = str(self.files[0]).split("/")
         Str1 = Str[len(Str) - 1].split('.')
         self.title.setText('{}'.format(Str1[0]))
+        self.createPlaylist()
 
     def ButtonClicked(self):
         self.player.play(self.playlist,self.playOption)
 
+    def volumeChanged(self):
+        self.player.updateVolume(self.volume.value())
 
     def createPlaylist(self):
         self.playlist.clear()
-        for i in range(self.table.rowCount()):
-            self.playlist.append(self.table.item(i, 0).text())
+        self.playlist.append(self.files[0])
+        print(self.playlist)
+
+
 
     def timerEvent(self, e):
         if self.step >= 100:
