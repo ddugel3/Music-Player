@@ -1,9 +1,8 @@
 import sys
-from PyQt5.QtWidgets import (QWidget, QPushButton,
-    QHBoxLayout, QVBoxLayout, QApplication,QLineEdit,QGroupBox,QProgressBar,QSlider,QProxyStyle,QStyle)
-
+from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5 import QtCore,QtGui
+from main_player import *
 
 #volume에서 handle 크기 조정
 class SliderProxyStyle(QProxyStyle):
@@ -13,25 +12,27 @@ class SliderProxyStyle(QProxyStyle):
         elif metric == QStyle.PM_SliderLength:
             return 40
         return super().pixelMetric(metric, option, widget)
-        main
+
         
 class Main(QWidget):
 
     def __init__(self):
         super().__init__()
+        self.player = MPlayer(self)
         self.Play()
+        self.playlist = []
+        self.selectedList = [0]
+        self.playOption = QMediaPlaylist.Sequential
 
 
     def Play(self):
         #button,screen ...
         screen = QGroupBox() #그래프??가 들어갈 공간
 
-        title = QLineEdit('제목이 들어갈 예정') #title
-        title.setReadOnly(True)
-        font = title.font()
-        font.setPointSize(20)
-        title.setFont(font)
-        title.setMaxLength(50)
+        self.title = QLineEdit('') #title
+        self.title.setReadOnly(True)
+        self.title.setMaxLength(50)
+        self.title.setFont(QtGui.QFont("Arial", 20, QtGui.QFont.Bold))
 
         # repeat button
         replaybutton = QPushButton()
@@ -50,9 +51,12 @@ class Main(QWidget):
         self.playbar.setStyleSheet("QProgressBar::chunk {background-color:rgb(0,0,0)}")
 
 
+
+
         self.playbutton = QPushButton() #playbutton
         self.playbutton.setIcon(QtGui.QIcon('../AD-Project/icon/play.png'))
         self.playbutton.setIconSize(QtCore.QSize(60,60))
+        #self.playbutton.clicked.connect(self.ButtonClicked)
         self.playbutton.clicked.connect(self.doAction) #playbutton클릭에 따른 signal
         self.timer = QBasicTimer()
         self.step = 0
@@ -71,6 +75,7 @@ class Main(QWidget):
         outbutton = QPushButton()
         outbutton.setIcon(QtGui.QIcon('../AD-Project/icon/out.png'))
         outbutton.setIconSize(QtCore.QSize(50,50))
+        outbutton.clicked.connect(self.Title)
 
         # volume
         self.volume = QSlider(QtCore.Qt.Vertical)
@@ -100,7 +105,7 @@ class Main(QWidget):
         #곡제목 위치
         vv1box.addLayout(vv1_h1box)
         vv1_h1box.addStretch(1)
-        vv1_h1box.addWidget(title)
+        vv1_h1box.addWidget(self.title)
         vv1_h1box.addStretch(1)
 
         #replay, playbar, random 버튼 위치
@@ -131,6 +136,22 @@ class Main(QWidget):
         self.setWindowTitle('main')
         self.setGeometry(500, 200, 1000, 700)
         self.show()
+
+    def Title(self):
+        files = QFileDialog.getOpenFileNames(self, 'Select one or more files to open', '','Sound (*.mp3 *.wav *.ogg *.flac *.wma)')
+        self.playlist.append(files[0])
+        Str = str(files[0]).split("/")
+        Str1 = Str[len(Str) - 1].split('.')
+        self.title.setText('{}'.format(Str1[0]))
+
+    def ButtonClicked(self):
+        self.player.play(self.playlist,self.playOption)
+
+
+    def createPlaylist(self):
+        self.playlist.clear()
+        for i in range(self.table.rowCount()):
+            self.playlist.append(self.table.item(i, 0).text())
 
     def timerEvent(self, e):
         if self.step >= 100:
