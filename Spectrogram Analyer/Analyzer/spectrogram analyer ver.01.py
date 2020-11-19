@@ -9,14 +9,17 @@ img_hsv = cv2.cvtColor(img_color, cv2.COLOR_BGR2HSV) # cvtColor 함수를 이용
 
 lower_blue = (120-10, 30, 30) # hsv 이미지에서 바이너리 이미지로 생성 , 적당한 값 30
 upper_blue = (120+10, 255, 255)
+
 img_mask = cv2.inRange(img_hsv, lower_blue, upper_blue) # 범위내의 픽셀들은 흰색, 나머지 검은색
 
 # 바이너리 이미지를 마스크로 사용하여 원본이미지에서 범위값에 해당하는 영상부분을 획득
-img_result = cv2.bitwise_and(img_color, img_color, mask = img_mask) 
+img_result = cv2.bitwise_and(img_color, img_color, mask = img_mask)
 
 cv2.imshow('img_origin', img_color)
 cv2.imshow('img_mask', img_mask)
 cv2.imshow('img_color', img_result)
+
+
 
 
 cv2.waitKey(0)
