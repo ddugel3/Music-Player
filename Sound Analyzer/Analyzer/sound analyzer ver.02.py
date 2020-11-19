@@ -4,7 +4,7 @@ import librosa, librosa.display
 import matplotlib.pyplot as plt
 FIG_SIZE = (15,10)
 
-file = "../../music/Piano-melody_1.wav"
+file = "../../music/Piano-melody_3.wav"
 (file_dir, file_id) = os.path.split(file)
 
 sig, sr = librosa.load(file, sr=22050)
