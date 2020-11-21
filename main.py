@@ -59,20 +59,17 @@ class Main(QWidget):
         self.playbar.setFont(QtGui.QFont('Arial',22))
         self.playbar.setStyleSheet("QProgressBar::chunk {background-color:rgb(0,0,0)}")
 
-
-        self.playbutton = QPushButton() #playbutton
+        #playbutton
+        self.playbutton = QPushButton()
         self.playbutton.setIcon(QtGui.QIcon('../AD-Project/icon/play.png'))
         self.playbutton.setIconSize(QtCore.QSize(60,60))
+        self.playbutton.clicked.connect(self.playClicked)
 
-        if self.player.state() != 1:
-            self.playbutton.clicked.connect(self.playClicked)
-
-        elif self.player.state() == 1:
-            self.playbutton.clicked.connect(self.stopClicked)
-        print(self.player.state())
         #self.playbutton.clicked.connect(self.doAction) #playbutton클릭에 따른 signal
         self.timer = QBasicTimer()
         self.step = 0
+
+
 
         #next button
         nextbutton = QPushButton()
@@ -161,15 +158,19 @@ class Main(QWidget):
         #self.createPlaylist()
 
     def playClicked(self):
-        self.player.play()
-        print(self.player.state())
-        self.playbutton.setIcon(QtGui.QIcon('../AD-Project/icon/stop.png'))
-        self.playbutton.setIconSize(QtCore.QSize(60, 60))
+        if self.player.state() == QMediaPlayer.PlayingState:
+            self.player.pause()
+            self.playbutton.setIcon(QtGui.QIcon('../AD-Project/icon/stop.png'))
+            self.playbutton.setIconSize(QtCore.QSize(60, 60))
+        else:
+            self.player.play()
+            self.playbutton.setIcon(QtGui.QIcon('../AD-Project/icon/play.png'))
+            self.playbutton.setIconSize(QtCore.QSize(60, 60))
+
 
     def stopClicked(self):
         self.player.pause()
-        self.playbutton.setIcon(QtGui.QIcon('../AD-Project/icon/play.png'))
-        self.playbutton.setIconSize(QtCore.QSize(60, 60))
+
 
 
 
