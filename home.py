@@ -15,7 +15,7 @@ class Home(QWidget):
         name.setStyleSheet("Color : olive")
 
         searchbutton = QPushButton() #검색
-        searchbutton.setIcon(QtGui.QIcon('../AD-Project/icon/search.png'))
+        searchbutton.setIcon(QtGui.QIcon('../AD-Project6/icon/search.png'))
         searchbutton.setIconSize(QtCore.QSize(40,40))
 
         search = QLineEdit() #검색

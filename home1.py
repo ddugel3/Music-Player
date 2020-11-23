@@ -1,6 +1,7 @@
 import sys
 from PyQt5.QtWidgets import (QWidget, QPushButton,
     QHBoxLayout,QFrame, QTableWidget,QHeaderView, QTableWidgetItem, QVBoxLayout, QApplication, QLabel,QLineEdit, QGroupBox, QFileDialog)
+from PyQt5.QtMultimedia import *
 from PyQt5 import QtCore, QtGui
 
 
@@ -126,7 +127,7 @@ class Mp3Player(QWidget):
     def createPlaylist(self):
         self.playlist.clear()
         for i in range(self.table.rowCount()):
-            self.playlist.append(self.table.item(i,0).text())
+            self.playlist.append(self.talbe.item(i,0).text())
             str=(self.table.item(i, 0).text()).split("Desktop/")
             print(str[1])
 
