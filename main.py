@@ -2,7 +2,9 @@ import sys
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5 import QtCore,QtGui
-from main_player import *
+from PyQt5.QtMultimedia import QMediaPlaylist, QMediaPlayer, QMediaContent
+#from main_player import *
+from main_player_2 import *
 
 #volume에서 handle 크기 조정
 class SliderProxyStyle(QProxyStyle):
@@ -18,11 +20,18 @@ class Main(QWidget):
 
     def __init__(self):
         super().__init__()
-        self.player = MPlayer(self)
+        #self.player = MPlayer(self)
+        #self.player = Musicplay(self)
+        self.playlist = QMediaPlaylist()
+        self.url = QUrl.fromLocalFile('../AD-Project/music/Piano-melody_2.mp3')
+        self.playlist.addMedia(QMediaContent(self.url))
+        self.player = QMediaPlayer()
+        self.player.setPlaylist(self.playlist)
         self.Play()
-        self.playlist = []
-        self.selectedList = [0]
-        self.playOption = QMediaPlaylist.Sequential
+        #self.playlist = []
+        #self.selectedList = [0]
+        #self.playOption = QMediaPlaylist.Sequential
+
 
 
     def Play(self):
@@ -50,16 +59,17 @@ class Main(QWidget):
         self.playbar.setFont(QtGui.QFont('Arial',22))
         self.playbar.setStyleSheet("QProgressBar::chunk {background-color:rgb(0,0,0)}")
 
-
-
-
-        self.playbutton = QPushButton() #playbutton
+        #playbutton
+        self.playbutton = QPushButton()
         self.playbutton.setIcon(QtGui.QIcon('../AD-Project/icon/play.png'))
         self.playbutton.setIconSize(QtCore.QSize(60,60))
-        self.playbutton.clicked.connect(self.ButtonClicked)
+        self.playbutton.clicked.connect(self.playClicked)
+
         #self.playbutton.clicked.connect(self.doAction) #playbutton클릭에 따른 signal
         self.timer = QBasicTimer()
         self.step = 0
+
+
 
         #next button
         nextbutton = QPushButton()
@@ -145,13 +155,29 @@ class Main(QWidget):
         Str = str(self.files[0]).split("/")
         Str1 = Str[len(Str) - 1].split('.')
         self.title.setText('{}'.format(Str1[0]))
-        self.createPlaylist()
+        #self.createPlaylist()
 
-    def ButtonClicked(self):
-        self.player.play(self.playlist,self.playOption)
+    def playClicked(self):
+        if self.player.state() == QMediaPlayer.PlayingState:
+            self.player.pause()
+            self.playbutton.setIcon(QtGui.QIcon('../AD-Project/icon/stop.png'))
+            self.playbutton.setIconSize(QtCore.QSize(60, 60))
+        else:
+            self.player.play()
+            self.playbutton.setIcon(QtGui.QIcon('../AD-Project/icon/play.png'))
+            self.playbutton.setIconSize(QtCore.QSize(60, 60))
+
+
+    def stopClicked(self):
+        self.player.pause()
+
+
+
+
+
 
     def volumeChanged(self):
-        self.player.updateVolume(self.volume.value())
+        self.player.setVolume(self.volume.value())
 
     def createPlaylist(self):
         self.playlist.clear()
@@ -180,6 +206,17 @@ class Main(QWidget):
             self.playbutton.setIcon(QtGui.QIcon('../AD-Project/icon/stop.png'))
             self.playbutton.setIconSize(QtCore.QSize(60,60))
 
+    def updateDurationChanged(self,msec):
+        # print('index:',index, 'duration:', msec)
+        self.pbar = self.playbar
+        if self.pbar:
+            self.pbar.setRange(0, msec)
+
+    def updatePositionChanged(self, msec):
+        # print('index:',index, 'position:', msec)
+        self.pbar = self.playbar
+        if self.pbar:
+            self.pbar.setValue(msec)
 
 
 if __name__ == '__main__':
