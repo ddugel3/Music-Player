@@ -65,6 +65,7 @@ class Main(QWidget):
         self.playbutton.setIconSize(QtCore.QSize(60,60))
         self.playbutton.clicked.connect(self.playClicked)
 
+
         #self.playbutton.clicked.connect(self.doAction) #playbutton클릭에 따른 signal
         self.timer = QBasicTimer()
         self.step = 0
@@ -160,21 +161,14 @@ class Main(QWidget):
     def playClicked(self):
         if self.player.state() == QMediaPlayer.PlayingState:
             self.player.pause()
-            self.playbutton.setIcon(QtGui.QIcon('../AD-Project/icon/stop.png'))
+            self.timer.stop()
+            self.playbutton.setIcon(QtGui.QIcon('../AD-Project/icon/play.png'))
             self.playbutton.setIconSize(QtCore.QSize(60, 60))
         else:
             self.player.play()
-            self.playbutton.setIcon(QtGui.QIcon('../AD-Project/icon/play.png'))
+            self.timer.start(100,self)
+            self.playbutton.setIcon(QtGui.QIcon('../AD-Project/icon/stop.png'))
             self.playbutton.setIconSize(QtCore.QSize(60, 60))
-
-
-    def stopClicked(self):
-        self.player.pause()
-
-
-
-
-
 
     def volumeChanged(self):
         self.player.setVolume(self.volume.value())
@@ -187,37 +181,12 @@ class Main(QWidget):
 
 
     def timerEvent(self, e):
-        if self.step >= 100:
+        if self.step >= 1000:
             self.timer.stop() #재생바 종료
             return
 
         self.step = self.step + 1
         self.playbar.setValue(self.step) #재생바의 재생정도를 step값을 기준으로 함.
-
-
-    #playbutton 누를때 아이콘 변경
-    def doAction(self):
-        if self.timer.isActive():
-            self.timer.stop()
-            self.playbutton.setIcon(QtGui.QIcon('../AD-Project/icon/play.png'))
-            self.playbutton.setIconSize(QtCore.QSize(60,60))
-        else:
-            self.timer.start(100, self)
-            self.playbutton.setIcon(QtGui.QIcon('../AD-Project/icon/stop.png'))
-            self.playbutton.setIconSize(QtCore.QSize(60,60))
-
-    def updateDurationChanged(self,msec):
-        # print('index:',index, 'duration:', msec)
-        self.pbar = self.playbar
-        if self.pbar:
-            self.pbar.setRange(0, msec)
-
-    def updatePositionChanged(self, msec):
-        # print('index:',index, 'position:', msec)
-        self.pbar = self.playbar
-        if self.pbar:
-            self.pbar.setValue(msec)
-
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
