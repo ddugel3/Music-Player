@@ -106,14 +106,6 @@ class Mp3Player(QWidget):
         closebutton.setIconSize(QtCore.QSize(50,50))
         closebutton.clicked.connect(app.quit)
 
-        upbutton = QPushButton() #위버튼
-        upbutton.setIcon(QtGui.QIcon('icon/up.png'))
-        upbutton.setIconSize(QtCore.QSize(50,50))
-
-        downbutton = QPushButton() #아래버튼
-        downbutton.setIcon(QtGui.QIcon('icon/down.png'))
-        downbutton.setIconSize(QtCore.QSize(50,50))
-
         newbutton = QPushButton() #추가버튼
         newbutton.setIcon(QtGui.QIcon('icon/new.png'))
         newbutton.setIconSize(QtCore.QSize(50,50))
@@ -140,7 +132,10 @@ class Mp3Player(QWidget):
         playlist = QGroupBox("Play List")  # playlist를 담을곳
         v1box.addWidget(playlist)
 
-        self.table =QTableWidget(0,1,self)
+        self.table =QTableWidget()
+        self.table.setRowCount(20)
+        self.table.setColumnCount(1)
+        self.setTableData()
         header = self.table.horizontalHeader()
         header.setFrameStyle(QFrame.Plain)
         header.setLineWidth(1)
@@ -160,9 +155,6 @@ class Mp3Player(QWidget):
 
         v2_1box.addWidget(closebutton)
         v2_1box.addStretch(1)
-
-        v2_2box.addWidget(upbutton)
-        v2_2box.addWidget(downbutton)
 
         v2_3box.addStretch(1)
         v2_3box.addWidget(newbutton)
@@ -185,25 +177,45 @@ class Mp3Player(QWidget):
 
         self.selectedList = list(set(self.selectedList))
 
+    def setTableData(self):
+        self.table.setItem(0,0,QTableWidgetItem("Make a wish.mp3"))
+        self.table.setItem(0,1,QTableWidgetItem("cheer up.mp3"))
+        self.table.setItem(0,2,QTableWidgetItem("snowman.mp3"))
+        self.table.setItem(0,3,QTableWidgetItem("santa tell me.mp3"))
+        self.table.setItem(0,4,QTableWidgetItem("text me merry chirstmas.mp3"))
+        self.table.setItem(0,5,QTableWidgetItem("black out.mp3"))
+        self.table.setItem(0,6,QTableWidgetItem("perhaps love.mp3"))
+        self.table.setItem(0,7,QTableWidgetItem("fly.mp3"))
+        self.table.setItem(0,8,QTableWidgetItem("what are we.mp3"))
+        self.table.setItem(0,9,QTableWidgetItem("thunder.mp3"))
+        self.table.setItem(0,10,QTableWidgetItem("adios.mp3"))
+        self.table.setItem(0,11,QTableWidgetItem("RBB.mp3"))
+        self.table.setItem(0,12,QTableWidgetItem("aside.mp3"))
+        self.table.setItem(0,13,QTableWidgetItem("hug.mp3"))
+        self.table.setItem(0,14,QTableWidgetItem("savage love.mp3"))
+        self.table.setItem(0,15,QTableWidgetItem("my page.mp3"))
+        self.table.setItem(0,16,QTableWidgetItem("square.mp3"))
+        self.table.setItem(0,17,QTableWidgetItem("welcome to my playground.mp3"))
+        self.table.setItem(0,18,QTableWidgetItem("i can't stop me.mp3"))
+        self.table.setItem(0,19,QTableWidgetItem("what is love?.mp3"))
+        self.table.setItem(0,20,QTableWidgetItem("solo.mp3"))
 
     def addList(self):
-        files = QFileDialog.getOpenFileNames(self,'Select one or more files to open','','Sound (*.mp3 *.wav *.ogg *.flac *.wma)')
-        cnt= len(files[0])
+        self.files = QFileDialog.getOpenFileNames(self,'Select one or more files to open','','Sound (*.mp3 *.wav *.ogg *.flac *.wma)')
+        Str =str(self.files[0]).split("/")
+        Str1=Str[len(Str) -1].split(("."))
+        self.playlist.append(Str1[1])
+        cnt= len(self.files[0])
         row= self.table.rowCount()
         self.table.setRowCount(row + cnt)
         for i in range(row, row + cnt):
-            self.table.setItem(i,0,QTableWidgetItem(files[0][i-row]))
-
+            self.table.setItem(i,0,QTableWidgetItem(self.files[0][i-row]))
         self.createPlaylist()
 
     def createPlaylist(self):
         self.playlist.clear()
-        for i in range(self.table.rowCount()):
-            self.playlist.append(self.table.item(i,0).text())
-            str= (self.table.item(i,0).text()).split("home/been/문서/GitHub/AD-Project/MUSIC/")
-            self.playlist.append(str[1])
-            print(str[1])
-
+        self.playlist.append(self.files[0])
+        print(self.playlist)
 
     def searchkeyword(self):
         text = self.search.text()
