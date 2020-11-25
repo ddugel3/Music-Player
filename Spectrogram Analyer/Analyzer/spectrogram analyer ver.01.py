@@ -19,8 +19,5 @@ cv2.imshow('img_origin', img_color)
 cv2.imshow('img_mask', img_mask)
 cv2.imshow('img_color', img_result)
 
-
-
-
 cv2.waitKey(0)
 cv2.destroyAllWindows()
