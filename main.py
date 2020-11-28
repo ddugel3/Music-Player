@@ -3,8 +3,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5 import QtCore,QtGui
 from PyQt5.QtMultimedia import QMediaPlaylist, QMediaPlayer, QMediaContent
-#from main_player import *
-from main_player_2 import *
+from home_11 import *
 
 #volume에서 handle 크기 조정
 class SliderProxyStyle(QProxyStyle):
@@ -20,17 +19,25 @@ class Main(QWidget):
 
     def __init__(self):
         super().__init__()
-        #self.player = MPlayer(self)
-        #self.player = Musicplay(self)
+        self.showplaylist = QDialog()
+        self.currentidx = 0
         self.playlist = QMediaPlaylist()
-        self.url = QUrl.fromLocalFile('../AD-Project/music/Piano-melody_2.mp3')
-        self.playlist.addMedia(QMediaContent(self.url))
+        self.list = ['../AD-Project/music/stay.wav','../AD-Project/music/잠이 오질 않네요.wav',
+                     '../AD-Project/music/Piano-melody_2.mp3','../AD-Project/music/STAY.wav',
+                     '../AD-Project/music/Piano-melody_1.wav']
+        self.a = QUrl.fromLocalFile('../AD-Project/music/stay-PostMalon.wav')
+        self.b = QUrl.fromLocalFile('../AD-Project/music/잠이 오질 않네요-장범준.wav')
+        self.c = QUrl.fromLocalFile('../AD-Project/music/Piano-melody_2.mp3')
+        self.d = QUrl.fromLocalFile('../AD-Project/music/STAY-BLACKPINK.wav')
+        self.e = QUrl.fromLocalFile('../AD-Project/music/Piano-melody_1.wav')
+        self.playlist.addMedia(QMediaContent(self.a))
+        self.playlist.addMedia(QMediaContent(self.b))
+        self.playlist.addMedia(QMediaContent(self.c))
+        self.playlist.addMedia(QMediaContent(self.d))
+        self.playlist.addMedia(QMediaContent(self.e))
         self.player = QMediaPlayer()
         self.player.setPlaylist(self.playlist)
         self.Play()
-        #self.playlist = []
-        #self.selectedList = [0]
-        #self.playOption = QMediaPlaylist.Sequential
 
 
 
@@ -40,8 +47,10 @@ class Main(QWidget):
 
         self.title = QLineEdit('') #title
         self.title.setReadOnly(True)
-        self.title.setMaxLength(50)
+        self.title.setMaxLength(1000)
         self.title.setFont(QtGui.QFont("Arial", 20, QtGui.QFont.Bold))
+
+
 
         # repeat button
         replaybutton = QPushButton()
@@ -73,20 +82,24 @@ class Main(QWidget):
 
 
         #next button
-        nextbutton = QPushButton()
-        nextbutton.setIcon(QtGui.QIcon('../AD-Project/icon/next.png'))
-        nextbutton.setIconSize(QtCore.QSize(80,60))
+        self.nextbutton = QPushButton()
+        self.nextbutton.setIcon(QtGui.QIcon('../AD-Project/icon/next.png'))
+        self.nextbutton.setIconSize(QtCore.QSize(80,60))
+        self.nextbutton.clicked.connect(self.nextClicked)
+
 
         #back button
-        backbutton = QPushButton()
-        backbutton.setIcon(QtGui.QIcon('../AD-Project/icon/back.png'))
-        backbutton.setIconSize(QtCore.QSize(80,60))
+        self.backbutton = QPushButton()
+        self.backbutton.setIcon(QtGui.QIcon('../AD-Project/icon/back.png'))
+        self.backbutton.setIconSize(QtCore.QSize(80,60))
+        self.backbutton.clicked.connect(self.prevClicked)
+
 
         #out button
         outbutton = QPushButton()
         outbutton.setIcon(QtGui.QIcon('../AD-Project/icon/out.png'))
         outbutton.setIconSize(QtCore.QSize(50,50))
-        outbutton.clicked.connect(self.Title)
+        outbutton.clicked.connect(self.Out)
 
         # volume
         self.volume = QSlider(QtCore.Qt.Vertical)
@@ -99,9 +112,10 @@ class Main(QWidget):
         self.volume.valueChanged[int].connect(self.volumeChanged)
 
         # lyricsbutton
-        lyricsbutton = QPushButton()
-        lyricsbutton.setIcon(QtGui.QIcon('../AD-Project/icon/lyrics.png'))
-        lyricsbutton.setIconSize(QtCore.QSize(50,50))
+        self.lyricsbutton = QPushButton()
+        self.lyricsbutton.setIcon(QtGui.QIcon('../AD-Project/icon/lyrics.png'))
+        self.lyricsbutton.setIconSize(QtCore.QSize(50,50))
+        self.lyricsbutton.clicked.connect(self.ShowPLayList)
 
         #layout
         vv1box = QVBoxLayout()
@@ -131,15 +145,15 @@ class Main(QWidget):
         #back,play,next 버튼
         vv1box.addLayout(vv1_h3box)
         vv1_h3box.addStretch(1)
-        vv1_h3box.addWidget(backbutton)
+        vv1_h3box.addWidget(self.backbutton)
         vv1_h3box.addWidget(self.playbutton)
-        vv1_h3box.addWidget(nextbutton)
+        vv1_h3box.addWidget(self.nextbutton)
         vv1_h3box.addStretch(1)
 
         #out, volume, lyrics 버튼
         vv2box.addWidget(outbutton)
         vv2box.addWidget(self.volume)
-        vv2box.addWidget(lyricsbutton)
+        vv2box.addWidget(self.lyricsbutton)
 
         Mainlayout = QHBoxLayout()
         Mainlayout.addLayout(vv1box)
@@ -151,12 +165,36 @@ class Main(QWidget):
         self.setGeometry(500, 200, 1000, 700)
         self.show()
 
-    def Title(self):
-        self.files = QFileDialog.getOpenFileNames(self, 'Select one or more files to open', '','Sound (*.mp3 *.wav *.ogg *.flac *.wma)')
-        Str = str(self.files[0]).split("/")
+
+
+
+    def Out(self):
+        self.close()
+        """self.files = QFileDialog.getOpenFileNames(self, 'Select one or more files to open', '','Sound (*.mp3 *.wav *.ogg *.flac *.wma)')
+        self.f = self.files[0]
+        Str = str(self.f[0]).split("/")
         Str1 = Str[len(Str) - 1].split('.')
         self.title.setText('{}'.format(Str1[0]))
-        #self.createPlaylist()
+        self.playlist = QMediaPlaylist()
+        elf.url = QUrl.fromLocalFile('../AD-Project/music/Piano-melody_2.mp3')
+        self.a = QUrl.fromLocalFile('../AD-Project/music/STAY - BLACKPINK.wav')
+        self.playlist.addMedia(QMediaContent(self.url))
+        self.playlist.addMedia(QMediaContent(self.a))
+        self.list = QMediaPlaylist()
+        for i in range(0,len(f)):
+            self.list.append(f[i])
+            print(self.list)
+        for path in lists:
+            url2 = QUrl.fromLocalFile(path)
+            self.list.addMedia(QMediaContent(url2))
+        self.player = QMediaPlayer()
+        self.player.setPlaylist(self.playlist)"""
+
+    def TTitle(self,idx):
+        Str = str(self.list[idx]).split("/")
+        Str1 = Str[len(Str) - 1].split('.')
+        self.title.setText('{}'.format(Str1[0]))
+
 
     def playClicked(self):
         if self.player.state() == QMediaPlayer.PlayingState:
@@ -169,24 +207,61 @@ class Main(QWidget):
             self.timer.start(100,self)
             self.playbutton.setIcon(QtGui.QIcon('../AD-Project/icon/stop.png'))
             self.playbutton.setIconSize(QtCore.QSize(60, 60))
+            self.TTitle(self.currentidx)
+
+    def nextClicked(self):
+        self.step = 0
+        self.currentidx +=1
+        self.TTitle(self.currentidx)
+        if self.player.state() == QMediaPlayer.PlayingState:
+            self.timer.start(100, self)
+        self.playlist.next()
+
+    def prevClicked(self):
+        self.step = 0
+        self.currentidx -= 1
+        self.TTitle(self.currentidx)
+        if self.player.state() == QMediaPlayer.PlayingState:
+            self.timer.start(100, self)
+        self.playlist.previous()
 
     def volumeChanged(self):
         self.player.setVolume(self.volume.value())
 
     def createPlaylist(self):
         self.playlist.clear()
-        self.playlist.append(self.files[0])
+        for i in range (0,len(self.files)):
+            self.playlist.append(self.files[0])
         print(self.playlist)
 
 
 
     def timerEvent(self, e):
-        if self.step >= 1000:
-            self.timer.stop() #재생바 종료
+        self.step = self.step + 1
+        self.playbar.setValue(self.step)
+        if self.step>=1000 :
+            self.step = 0 #재생바 종료
+            self.step = self.step + 1
+            self.playbar.setValue(self.step)
             return
 
-        self.step = self.step + 1
-        self.playbar.setValue(self.step) #재생바의 재생정도를 step값을 기준으로 함.
+
+         #재생바의 재생정도를 step값을 기준으로 함.
+
+    def ShowPLayList(self):
+
+
+        List = ['stay-PostMalon', '잠이 오질 않네요-장범준','Piano-melody_2', 'STAY-BLACKPINK','Piano-melody_1']
+        for (i,j) in zip (List,range(10,110,20)):
+            a = QLabel(i, self.showplaylist)
+            a.move(10, j)
+
+
+
+        self.showplaylist.setWindowTitle('PlayLIst')
+        self.showplaylist.setWindowModality(Qt.ApplicationModal)
+        self.showplaylist.setGeometry(1500, 400, 300, 200)
+        self.showplaylist.show()
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
