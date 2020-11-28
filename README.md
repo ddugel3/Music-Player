@@ -20,3 +20,4 @@
      - https://stackoverflow.com/questions/54932976/audio-equalizer
      - https://stackoverflow.com/questions/51893313/adjust-the-size-width-height-of-a-custom-qtablewidget 
      - https://wikidocs.net/35498 
+     - https://stackoverflow.com/questions/53225320/open-a-new-window-when-the-button-is-clicked-pyqt5
