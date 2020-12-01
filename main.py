@@ -52,12 +52,12 @@ class Main(QWidget):
 
 
         self.label = QLabel(self.screen)
-        self.label.move(130, 30)
-        self.label.resize(650, 400)
-        self.movie = QtGui.QMovie("loading.gif")
+        self.label.move(120, 30)
+        self.label.resize(700, 400)
+        self.movie = QtGui.QMovie("../AD-Project/icon/loading2.gif")
         self.label.setMovie(self.movie)
         self.label.setScaledContents(True)
-        self.movie.start()
+
 
         self.title = QLineEdit('') #title
         self.title.setReadOnly(True)
@@ -218,6 +218,7 @@ class Main(QWidget):
             self.playbutton.setIconSize(QtCore.QSize(60, 60))
         else:
             self.player.play()
+            self.movie.start()
             self.timer.start(100,self)
             self.playbutton.setIcon(QtGui.QIcon('../AD-Project/icon/stop.png'))
             self.playbutton.setIconSize(QtCore.QSize(60, 60))
