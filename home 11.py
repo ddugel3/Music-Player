@@ -82,6 +82,10 @@ class Mp3Player(QWidget):
     def initUI(self):
 
         #button,title...
+        self.logo = QPushButton() #추가버튼
+        self.logo.setIcon(QtGui.QIcon('icon/logo.png'))
+        self.logo.setIconSize(QtCore.QSize(50,50))
+
         name = QLabel(" H-music ") #mp3 이름(미정)
         name.setFont(QtGui.QFont("궁서",30,QtGui.QFont.Bold))
         name.setStyleSheet("Color : olive")
@@ -123,7 +127,7 @@ class Mp3Player(QWidget):
 
         # mp3 이름, 검색 창 레이아웃
         h2box = QHBoxLayout()
-        h2box.addWidget(name)
+        h2box.addWidget(self.logo)
         h2box.addWidget(self.search)
         h2box.addWidget(self.searchbutton)
 
