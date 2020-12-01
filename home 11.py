@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import (QWidget, QPushButton, QHBoxLayout, QFrame, QTableWidget,QHeaderView, QTableWidgetItem, QVBoxLayout, QApplication,
-                             QLabel,QLineEdit, QGroupBox, QFileDialog,QStyledItemDelegate)
+                             QLabel,QLineEdit, QGroupBox, QFileDialog, QMainWindow, QStyledItemDelegate)
 from PyQt5 import QtCore, QtGui,QtWidgets
 import sys
 
@@ -19,7 +19,8 @@ class HTMLDelegate(QStyledItemDelegate):
         painter.save()
         options = QtWidgets.QStyleOptionViewItem(option)
         self.initStyleOption(options, index)
-        res = ""
+        res = ""903ls!!
+
         color = QtGui.QColor("orange")
         if substring:
             substrings = options.text.split(substring)
@@ -81,7 +82,7 @@ class Mp3Player(QWidget):
     def initUI(self):
 
         #button,title...
-        name = QLabel(" 멋진이름 ") #mp3 이름(미정)
+        name = QLabel(" H-music ") #mp3 이름(미정)
         name.setFont(QtGui.QFont("궁서",30,QtGui.QFont.Bold))
         name.setStyleSheet("Color : olive")
         self.playlist=[]
@@ -110,6 +111,12 @@ class Mp3Player(QWidget):
         newbutton.setIcon(QtGui.QIcon('icon/new.png'))
         newbutton.setIconSize(QtCore.QSize(50,50))
         newbutton.clicked.connect(self.addList)
+
+        choosebutton = QPushButton()#리스트선택 후 넘어가기 버튼
+        choosebutton.setIcon(QtGui.QIcon('icon/choose.png'))
+        choosebutton.setIconSize(QtCore.QSize(50,50))
+        choosebutton.clicked.connect(self.window2)
+
         #Layout
         v1box = QVBoxLayout() #playlist쪽 레이아웃
         v2box = QVBoxLayout() #버튼 모음 레이아웃
@@ -142,7 +149,6 @@ class Mp3Player(QWidget):
         self.table.setHorizontalHeader(header)
         self.table.setHorizontalHeaderLabels(['노래목록'])
         self.table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
-        self.table.itemSelectionChanged.connect(self.tableChanged)
         self.table.setItemDelegate(HTMLDelegate(self.table))
         box.addWidget(self.table)
 
@@ -158,7 +164,7 @@ class Mp3Player(QWidget):
 
         v2_3box.addStretch(1)
         v2_3box.addWidget(newbutton)
-
+        v2_3box.addWidget(choosebutton)
 
         Main=QHBoxLayout()
         Main.addLayout(v1box)
@@ -169,13 +175,6 @@ class Mp3Player(QWidget):
         self.setWindowTitle('home')
         self.setGeometry(500, 200, 1000, 700)
         self.show()
-
-    def tableChanged(self):
-        self.selectedList.clear()
-        for item in self.table.selectedIndexes():
-            self.selectedList.append(item.row())
-
-        self.selectedList = list(set(self.selectedList))
 
     def setTableData(self):
         self.table.setItem(0,0,QTableWidgetItem("Make a wish.mp3"))
@@ -225,6 +224,15 @@ class Mp3Player(QWidget):
         for item in allitems:
             item.setData(QtCore.Qt.UserRole, text if item in selected_items else None)
 
+    def window2(self):
+        self.w = Window2()
+        self.w.show()
+        self.hide()
+#///////////////////////////////////// main ///////////////////////////////////
+class Window2(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("Window22222")
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
