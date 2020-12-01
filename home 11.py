@@ -19,7 +19,7 @@ class HTMLDelegate(QStyledItemDelegate):
         painter.save()
         options = QtWidgets.QStyleOptionViewItem(option)
         self.initStyleOption(options, index)
-        res = ""903ls!!
+        res = ""
 
         color = QtGui.QColor("orange")
         if substring:
