@@ -58,10 +58,6 @@ class HTMLDelegate(QStyledItemDelegate):
         if index.column() != 0:
             textRect.adjust(5,0,0,0,0)
 
-        thefuckyourshitup_constant = 1
-        margin = (option.rect.height() - options.fontMetrics.height()) // 2
-        margin = margin - thefuckyourshitup_constant
-        textRect.setTop(textRect.top() + margin)
 
         painter.translate(textRect.topLeft())
         painter.setClipRect(textRect.translated(-textRect.topLeft()))
@@ -90,7 +86,6 @@ class Mp3Player(QWidget):
         name.setFont(QtGui.QFont("궁서",30,QtGui.QFont.Bold))
         name.setStyleSheet("Color : olive")
         self.playlist=[]
-        self.selectedList = [0]
 
         self.search = QLineEdit() #검색
         font = self.search.font()
