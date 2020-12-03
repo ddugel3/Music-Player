@@ -1,4 +1,5 @@
 import sys
+import threading
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5 import QtGui
@@ -39,7 +40,10 @@ class Main(QWidget):
         self.playlist.addMedia(QMediaContent(self.e))
         self.player = QMediaPlayer()
         self.player.setPlaylist(self.playlist)
+        self.count = 0
+        self.bartimer = 0
         self.Play()
+
 
 
 
@@ -67,14 +71,16 @@ class Main(QWidget):
 
 
         # repeat button
-        replaybutton = QPushButton()
-        replaybutton.setIcon(QtGui.QIcon('../AD-Project/icon/repeat.png'))
-        replaybutton.setIconSize(QtCore.QSize(35,35))
+        self.replaybutton = QPushButton()
+        self.replaybutton.setIcon(QtGui.QIcon('../AD-Project/icon/repeatone.png'))
+        self.replaybutton.setIconSize(QtCore.QSize(35,35))
+        self.replaybutton.clicked.connect(self.currretloop)
 
         # random button
-        randombutton = QPushButton()
-        randombutton.setIcon(QtGui.QIcon('../AD-Project/icon/shuffle.png'))
-        randombutton.setIconSize(QtCore.QSize(35,35))
+        self.randombutton = QPushButton()
+        self.randombutton.setIcon(QtGui.QIcon('../AD-Project/icon/repeat.png'))
+        self.randombutton.setIconSize(QtCore.QSize(35,35))
+        self.randombutton.clicked.connect(self.loop)
 
         # playbar 재생정
         self.playbar = QProgressBar(self)
@@ -152,9 +158,9 @@ class Main(QWidget):
 
         #replay, playbar, random 버튼 위치
         vv1box.addLayout(vv1_h2box)
-        vv1_h2box.addWidget(replaybutton)
+        vv1_h2box.addWidget(self.replaybutton)
         vv1_h2box.addWidget(self.playbar)
-        vv1_h2box.addWidget(randombutton)
+        vv1_h2box.addWidget(self.randombutton)
 
         #back,play,next 버튼
         vv1box.addLayout(vv1_h3box)
@@ -184,25 +190,7 @@ class Main(QWidget):
 
     def Out(self):
         self.close()
-        """self.files = QFileDialog.getOpenFileNames(self, 'Select one or more files to open', '','Sound (*.mp3 *.wav *.ogg *.flac *.wma)')
-        self.f = self.files[0]
-        Str = str(self.f[0]).split("/")
-        Str1 = Str[len(Str) - 1].split('.')
-        self.title.setText('{}'.format(Str1[0]))
-        self.playlist = QMediaPlaylist()
-        elf.url = QUrl.fromLocalFile('../AD-Project/music/Piano-melody_2.mp3')
-        self.a = QUrl.fromLocalFile('../AD-Project/music/STAY - BLACKPINK.wav')
-        self.playlist.addMedia(QMediaContent(self.url))
-        self.playlist.addMedia(QMediaContent(self.a))
-        self.list = QMediaPlaylist()
-        for i in range(0,len(f)):
-            self.list.append(f[i])
-            print(self.list)
-        for path in lists:
-            url2 = QUrl.fromLocalFile(path)
-            self.list.addMedia(QMediaContent(url2))
-        self.player = QMediaPlayer()
-        self.player.setPlaylist(self.playlist)"""
+
 
     def TTitle(self,idx):
         Str = str(self.list[idx]).split("/")
@@ -213,13 +201,14 @@ class Main(QWidget):
     def playClicked(self):
         if self.player.state() == QMediaPlayer.PlayingState:
             self.player.pause()
-            self.timer.stop()
+            #self.timer.stop()
             self.playbutton.setIcon(QtGui.QIcon('../AD-Project/icon/play.png'))
             self.playbutton.setIconSize(QtCore.QSize(60, 60))
         else:
             self.player.play()
-            self.movie.start()
-            self.timer.start(100,self)
+            self.start_timer(0)
+
+            #self.timer.start(100, self)
             self.playbutton.setIcon(QtGui.QIcon('../AD-Project/icon/stop.png'))
             self.playbutton.setIconSize(QtCore.QSize(60, 60))
             self.TTitle(self.currentidx)
@@ -232,6 +221,7 @@ class Main(QWidget):
             self.timer.start(100, self)
         self.playlist.next()
 
+
     def prevClicked(self):
         self.step = 0
         self.currentidx -= 1
@@ -243,12 +233,6 @@ class Main(QWidget):
     def volumeChanged(self):
         self.player.setVolume(self.volume.value())
 
-    def createPlaylist(self):
-        self.playlist.clear()
-        for i in range (0,len(self.files)):
-            self.playlist.append(self.files[0])
-        print(self.playlist)
-
 
 
     def timerEvent(self, e):
@@ -259,6 +243,7 @@ class Main(QWidget):
             self.step = self.step + 1
             self.playbar.setValue(self.step)
             return
+
 
 
          #재생바의 재생정도를 step값을 기준으로 함.
@@ -275,16 +260,48 @@ class Main(QWidget):
         label = QLabel(self.showplaylist)
         label.move(0, 110)
         label.resize(100, 100)
-        movie = QtGui.QMovie("loading.gif")
-        label.setMovie(movie)
-        label.setScaledContents(True)
-        movie.start()
+
 
 
         self.showplaylist.setWindowTitle('PlayLIst')
         self.showplaylist.setWindowModality(Qt.ApplicationModal)
         self.showplaylist.setGeometry(1500, 400, 300, 200)
         self.showplaylist.show()
+
+
+    def start_timer(self,c):
+        self.count += 1
+        t = threading.Timer(1,self.start_timer,args=[c])
+        t.start()
+        self.movie.start()
+
+
+        if self.count == 5:
+            self.timer.start(100, self)
+            self.movie.stop()
+            #self.playbartimer(0)
+            t.cancel()
+
+
+    def closed(self,state):
+        self.label.setVisible(state != Qt.Unchecked)
+
+    def playbartimer(self,a):
+        self.bartimer += 1
+        tr = threading.Timer(1, self.playbartimer, args=[a])
+        tr.start()
+
+        print(self.bartimer)
+        if self.bartimer == 10:
+            self.timer.stop()
+            tr.cancel()
+
+    def currretloop(self):
+        self.playlist.setPlaybackMode(QMediaPlaylist.CurrentItemInLoop)
+
+    def loop(self):
+        self.playlist.setPlaybackMode(QMediaPlaylist.Loop)
+
 
 
 
