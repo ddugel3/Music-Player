@@ -10,4 +10,5 @@ sr, y_read = sp.io.wavfile.read("octave.wav")
 plt.plot(y_read[40000:50000])
 plt.show()
 
+0
 

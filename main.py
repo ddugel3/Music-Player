@@ -4,8 +4,8 @@ from PyQt5.QtCore import *
 from PyQt5 import QtCore,QtGui
 from PyQt5.QtMultimedia import QMediaPlaylist, QMediaPlayer, QMediaContent
 #from main_player import *
-from main_player_2 import *
 
+from main_player_2 import *
 #volume에서 handle 크기 조정
 class SliderProxyStyle(QProxyStyle):
     def pixelMetric(self, metric, option, widget):

@@ -4,10 +4,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 wav = '../../music/Piano-melody_1.wav'
+
+
 (file_dir, file_id) = os.path.split(wav)
 print("file_dir:", file_dir)
 print("file_id:", file_id)
-y, sr = librosa.load(wav, sr=10000)
+ y, sr = librosa.load(wav, sr=10000)
 time = np.linspace(0, len(y)/sr, len(y)) # time axis
 
 fig, ax = plt.subplots() # plot
