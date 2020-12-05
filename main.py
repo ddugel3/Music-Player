@@ -283,7 +283,7 @@ class Main(QWidget):
     def loop(self):
         self.playlist.setPlaybackMode(QMediaPlaylist.Loop)
 
-    def playbarstart(self):
+    """def playbarstart(self):
         self.ccount = 0
         self.c = 0
         while self.ccount <= 10:
@@ -292,7 +292,7 @@ class Main(QWidget):
             time.sleep(1)
             self.playbar.setValue(self.ccount)
     def playbarstop(self):
-        self.playbar.setValue()
+        self.playbar.setValue()"""
 
 
 if __name__ == '__main__':
