@@ -1,10 +1,12 @@
 import sys
 import threading
+import time
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5 import QtGui
 from PyQt5 import QtCore
 from PyQt5.QtMultimedia import QMediaPlaylist, QMediaPlayer, QMediaContent
+
 #from home_11 import *
 
 
@@ -53,14 +55,6 @@ class Main(QWidget):
     def Play(self):
         #button,screen ...
         self.screen = QGroupBox()
-
-
-        self.label = QLabel(self.screen)
-        self.label.move(120, 30)
-        self.label.resize(700, 400)
-        self.movie = QtGui.QMovie("../AD-Project/icon/loading2.gif")
-        self.label.setMovie(self.movie)
-        self.label.setScaledContents(True)
 
 
         self.title = QLineEdit('') #title
@@ -201,14 +195,12 @@ class Main(QWidget):
     def playClicked(self):
         if self.player.state() == QMediaPlayer.PlayingState:
             self.player.pause()
-            #self.timer.stop()
+            self.timer.stop()
             self.playbutton.setIcon(QtGui.QIcon('../AD-Project/icon/play.png'))
             self.playbutton.setIconSize(QtCore.QSize(60, 60))
         else:
             self.player.play()
-            self.start_timer(0)
-
-            #self.timer.start(100, self)
+            self.timer.start(100, self)
             self.playbutton.setIcon(QtGui.QIcon('../AD-Project/icon/stop.png'))
             self.playbutton.setIconSize(QtCore.QSize(60, 60))
             self.TTitle(self.currentidx)
@@ -240,8 +232,7 @@ class Main(QWidget):
         self.playbar.setValue(self.step)
         if self.step>=1000 :
             self.step = 0 #재생바 종료
-            self.step = self.step + 1
-            self.playbar.setValue(self.step)
+            self.timer.stop()
             return
 
 
@@ -269,18 +260,8 @@ class Main(QWidget):
         self.showplaylist.show()
 
 
-    def start_timer(self,c):
-        self.count += 1
-        t = threading.Timer(1,self.start_timer,args=[c])
-        t.start()
-        self.movie.start()
 
 
-        if self.count == 5:
-            self.timer.start(100, self)
-            self.movie.stop()
-            #self.playbartimer(0)
-            t.cancel()
 
 
     def closed(self,state):
@@ -302,7 +283,16 @@ class Main(QWidget):
     def loop(self):
         self.playlist.setPlaybackMode(QMediaPlaylist.Loop)
 
-
+    def playbarstart(self):
+        self.ccount = 0
+        self.c = 0
+        while self.ccount <= 10:
+            self.ccount +=1
+            self.c = self.ccount
+            time.sleep(1)
+            self.playbar.setValue(self.ccount)
+    def playbarstop(self):
+        self.playbar.setValue()
 
 
 if __name__ == '__main__':
