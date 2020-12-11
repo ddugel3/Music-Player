@@ -6,8 +6,7 @@ from PyQt5.QtCore import *
 from PyQt5 import QtGui
 from PyQt5 import QtCore
 from PyQt5.QtMultimedia import QMediaPlaylist, QMediaPlayer, QMediaContent
-
-#from home_11 import *
+from demo_pyqt5 import *
 
 
 #volume에서 handle 크기 조정
@@ -46,10 +45,22 @@ class Main(QWidget):
         self.bartimer = 0
         self.Play()
 
+
+
+
+
+
+
     def Play(self):
         #button,screen ...
         self.screen = QGroupBox()
-
+        self.label = QLabel(self.screen)
+        self.label.move(120, 30)
+        self.label.resize(700, 400)
+        self.movie = QtGui.QMovie("../AD-Project/icon/loading2.gif")
+        self.label.setMovie(self.movie)
+        self.label.setScaledContents(True)
+        self.movie.start()
 
         self.title = QLineEdit('') #title
         self.title.setReadOnly(True)
@@ -75,6 +86,7 @@ class Main(QWidget):
         self.playbar.setFormat(" ")
         self.playbar.setFont(QtGui.QFont('Arial',22))
         self.playbar.setStyleSheet("QProgressBar::chunk {background-color:rgb(0,0,0)}")
+
 
         #playbutton
         self.playbutton = QPushButton()
@@ -155,6 +167,7 @@ class Main(QWidget):
         vv1_h3box.addStretch(1)
         vv1_h3box.addWidget(self.backbutton)
         vv1_h3box.addWidget(self.playbutton)
+        self.playbutton.clicked.connect(self.openequalizer)
         vv1_h3box.addWidget(self.nextbutton)
         vv1_h3box.addStretch(1)
 
@@ -199,6 +212,7 @@ class Main(QWidget):
             self.playbutton.setIconSize(QtCore.QSize(60, 60))
             self.TTitle(self.currentidx)
 
+
     def nextClicked(self):
         self.step = 0
         self.currentidx +=1
@@ -229,15 +243,8 @@ class Main(QWidget):
             self.timer.stop()
             return
 
-
-
-         #재생바의 재생정도를 step값을 기준으로 함.
-
     def ShowPLayList(self):
-
-
         List = ['stay-PostMalon', '잠이 오질 않네요-장범준','Piano-melody_2', 'STAY-BLACKPINK','Piano-melody_1']
-
         for (i,j) in zip (List,range(10,110,20)):
             a = QLabel(i, self.showplaylist)
             a.move(10, j)
@@ -246,17 +253,20 @@ class Main(QWidget):
         label.move(0, 110)
         label.resize(100, 100)
 
-
-
         self.showplaylist.setWindowTitle('PlayLIst')
         self.showplaylist.setWindowModality(Qt.ApplicationModal)
         self.showplaylist.setGeometry(1500, 400, 300, 200)
         self.showplaylist.show()
 
+    def positionChanged(self, position):
+        self.playbar.setValue(position)
+        self.position = position
 
+    def durationChanged(self, duration):
+        self.playbar.setRange(0, duration)
 
-
-
+    def setPosition(self, position):
+        self.player.setPosition(position)
 
     def closed(self,state):
         self.label.setVisible(state != Qt.Unchecked)
@@ -276,6 +286,10 @@ class Main(QWidget):
 
     def loop(self):
         self.playlist.setPlaybackMode(QMediaPlaylist.Loop)
+
+    def openequalizer(self):
+        self.w = Window()
+        self.w.show()
 
     """def playbarstart(self):
         self.ccount = 0

@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import (QWidget, QPushButton, QHBoxLayout, QFrame, QTableWidget,QHeaderView, QTableWidgetItem, QVBoxLayout, QApplication,
                              QLabel,QLineEdit, QGroupBox, QFileDialog, QMainWindow, QStyledItemDelegate)
 from PyQt5 import QtCore, QtGui,QtWidgets
+from main import *
 import sys
 
 try:
@@ -114,7 +115,7 @@ class Mp3Player(QWidget):
         choosebutton = QPushButton()#리스트선택 후 넘어가기 버튼
         choosebutton.setIcon(QtGui.QIcon('icon/choose.png'))
         choosebutton.setIconSize(QtCore.QSize(50,50))
-        choosebutton.clicked.connect(self.window2)
+        choosebutton.clicked.connect(self.openwindow)
 
         #Layout
         v1box = QVBoxLayout() #playlist쪽 레이아웃
@@ -223,18 +224,13 @@ class Mp3Player(QWidget):
         for item in allitems:
             item.setData(QtCore.Qt.UserRole, text if item in selected_items else None)
 
-    def window2(self):
-        self.w = Window2()
-        self.w.show()
+    def openwindow(self):
         self.hide()
+        self.w = Main()
+        self.w.show()
 
-class Window2(QMainWindow):
-    def __init__(self):
-        super().__init__()
-        self.setWindowTitle("Window22222")
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     mp3 = Mp3Player()
-    mp3.show()
     sys.exit(app.exec_())
