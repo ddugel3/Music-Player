@@ -46,12 +46,6 @@ class Main(QWidget):
         self.bartimer = 0
         self.Play()
 
-
-
-
-
-
-
     def Play(self):
         #button,screen ...
         self.screen = QGroupBox()

@@ -227,7 +227,7 @@ class Mp3Player(QWidget):
         self.w = Window2()
         self.w.show()
         self.hide()
-#///////////////////////////////////// main ///////////////////////////////////
+
 class Window2(QMainWindow):
     def __init__(self):
         super().__init__()
