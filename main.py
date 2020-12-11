@@ -55,7 +55,13 @@ class Main(QWidget):
     def Play(self):
         #button,screen ...
         self.screen = QGroupBox()
-
+        self.label = QLabel(self.screen)
+        self.label.move(120, 30)
+        self.label.resize(700, 400)
+        self.movie = QtGui.QMovie("../AD-Project/icon/loading2.gif")
+        self.label.setMovie(self.movie)
+        self.label.setScaledContents(True)
+        self.movie.start()
 
         self.title = QLineEdit('') #title
         self.title.setReadOnly(True)
@@ -81,6 +87,7 @@ class Main(QWidget):
         self.playbar.setFormat(" ")
         self.playbar.setFont(QtGui.QFont('Arial',22))
         self.playbar.setStyleSheet("QProgressBar::chunk {background-color:rgb(0,0,0)}")
+
 
         #playbutton
         self.playbutton = QPushButton()
@@ -237,7 +244,7 @@ class Main(QWidget):
 
 
 
-         #재생바의 재생정도를 step값을 기준으로 함.
+
 
     def ShowPLayList(self):
 
@@ -259,10 +266,15 @@ class Main(QWidget):
         self.showplaylist.setGeometry(1500, 400, 300, 200)
         self.showplaylist.show()
 
+    def positionChanged(self, position):
+        self.playbar.setValue(position)
+        self.position = position
 
+    def durationChanged(self, duration):
+        self.playbar.setRange(0, duration)
 
-
-
+    def setPosition(self, position):
+        self.player.setPosition(position)
 
     def closed(self,state):
         self.label.setVisible(state != Qt.Unchecked)
