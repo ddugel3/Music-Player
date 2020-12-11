@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import (QWidget, QPushButton, QHBoxLayout, QFrame, QTableWi
                              QLabel,QLineEdit, QGroupBox, QFileDialog, QMainWindow, QStyledItemDelegate)
 from PyQt5 import QtCore, QtGui,QtWidgets
 from main import *
+
 import sys
 
 try:

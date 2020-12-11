@@ -2,7 +2,7 @@ from PyQt5 import QtCore, QtWidgets
 from equalizer_bar import EqualizerBar
 
 import random
-
+import sys
 
 class Window(QtWidgets.QMainWindow):
 
@@ -11,8 +11,8 @@ class Window(QtWidgets.QMainWindow):
 
         self.equalizer = EqualizerBar(5, ['#0C0786', '#40039C', '#6A00A7', '#8F0DA3', '#B02A8F', '#CA4678', '#E06461',
                                           '#F1824C', '#FCA635', '#FCCC25', '#EFF821'])
-
         self.setCentralWidget(self.equalizer)
+        self.setGeometry(512, 240, 700*1.3, 400*1.2)
 
         self._timer = QtCore.QTimer()
         self._timer.setInterval(100)
@@ -25,15 +25,7 @@ class Window(QtWidgets.QMainWindow):
             for v in self.equalizer.values()
             ])
 
-
-
-
-app = QtWidgets.QApplication([])
-w = Window()
-w.show()
-app.exec_()
-
-
-
-
-
+"""if __name__ == '__main__':
+    app = QtWidgets.QApplication(sys.argv)
+    main = Window()
+    sys.exit(app.exec_())"""

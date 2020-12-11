@@ -12,7 +12,7 @@ class EqualizerBar(QtWidgets.QWidget):
         self.setSizePolicy(
             QtWidgets.QSizePolicy.MinimumExpanding,
             QtWidgets.QSizePolicy.MinimumExpanding
-        )
+       )
 
         if isinstance(steps, list):
             # list of colours.
@@ -46,10 +46,8 @@ class EqualizerBar(QtWidgets.QWidget):
         # Current values are stored in a list.
         self._values = [0.0] * bars
 
-
     def paintEvent(self, e):
         painter = QtGui.QPainter(self)
-
         brush = QtGui.QBrush()
         brush.setColor(self._background_color)
         brush.setStyle(Qt.SolidPattern)
@@ -57,8 +55,10 @@ class EqualizerBar(QtWidgets.QWidget):
         painter.fillRect(rect, brush)
 
         # Define our canvas.
-        d_height = painter.device().height() - (self._padding * 2)
-        d_width = painter.device().width() - (self._padding * 2)
+        d_height = 400*1.1
+        d_width = 700*1.2
+        #d_height = painter.device().height() - (self._padding * 2)
+        #d_width = painter.device().width() - (self._padding * 2)
 
         # Draw the bars.
         step_y = d_height / self.n_steps

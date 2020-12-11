@@ -8,7 +8,6 @@ from PyQt5 import QtCore
 from PyQt5.QtMultimedia import QMediaPlaylist, QMediaPlayer, QMediaContent
 from demo_pyqt5 import *
 
-
 #volume에서 handle 크기 조정
 class SliderProxyStyle(QProxyStyle):
     def pixelMetric(self, metric, option, widget):
@@ -22,17 +21,27 @@ class SliderProxyStyle(QProxyStyle):
 class Main(QWidget):
     def __init__(self):
         super().__init__()
+        self.List = ['stay-PostMalon', '잠이 오질 않네요-장범준', 'Piano-melody_2', 'STAY-BLACKPINK', 'Piano-melody_1']
         self.showplaylist = QDialog()
         self.currentidx = 0
         self.playlist = QMediaPlaylist()
         self.list = ['../AD-Project/music/stay.wav','../AD-Project/music/잠이 오질 않네요.wav',
                      '../AD-Project/music/Piano-melody_2.mp3','../AD-Project/music/STAY.wav',
                      '../AD-Project/music/Piano-melody_1.wav']
+        Qurlmusic = []
+        """for name in self.List:
+            k = "../AD-Project/music/" + name
+            Qurlmusic.append(k)
+            self.playlist.addMedia(QMediaContent(self.k))"""
+
+
+
         self.a = QUrl.fromLocalFile('../AD-Project/music/stay-PostMalon.wav')
         self.b = QUrl.fromLocalFile('../AD-Project/music/잠이 오질 않네요-장범준.wav')
         self.c = QUrl.fromLocalFile('../AD-Project/music/Piano-melody_2.mp3')
         self.d = QUrl.fromLocalFile('../AD-Project/music/STAY-BLACKPINK.wav')
         self.e = QUrl.fromLocalFile('../AD-Project/music/Piano-melody_1.wav')
+        
         self.playlist.addMedia(QMediaContent(self.a))
         self.playlist.addMedia(QMediaContent(self.b))
         self.playlist.addMedia(QMediaContent(self.c))
@@ -51,8 +60,7 @@ class Main(QWidget):
         self.screen = QGroupBox()
         self.screen.setStyleSheet("background:rgb(255,255,255)")
         self.label = QLabel(self.screen)
-        self.label.move(120, 30)
-        self.label.resize(700, 400)
+        self.label.move(200, 80)
         self.movie = QtGui.QMovie("../AD-Project/icon/loading2.gif")
         self.label.setMovie(self.movie)
         self.label.setScaledContents(True)
@@ -124,7 +132,7 @@ class Main(QWidget):
         self.volume.setStyleSheet("QSlider::handle:vertical{" 
                                   "background:rgb(0,0,0)}")
         self.volume.setRange(0, 100)
-        self.volume.setValue(50)
+        self.volume.setValue(10)
         self.volume.valueChanged[int].connect(self.volumeChanged)
 
         # lyricsbutton
@@ -165,6 +173,7 @@ class Main(QWidget):
         vv1_h3box.addWidget(self.playbutton)
         self.playbutton.clicked.connect(self.openequalizer)
         vv1_h3box.addWidget(self.nextbutton)
+
         vv1_h3box.addStretch(1)
 
         #out, volume, lyrics 버튼
@@ -230,8 +239,6 @@ class Main(QWidget):
     def volumeChanged(self):
         self.player.setVolume(self.volume.value())
 
-
-
     def timerEvent(self, e):
         self.step = self.step + 1
         self.playbar.setValue(self.step)
@@ -241,8 +248,8 @@ class Main(QWidget):
             return
 
     def ShowPLayList(self):
-        List = ['stay-PostMalon', '잠이 오질 않네요-장범준','Piano-melody_2', 'STAY-BLACKPINK','Piano-melody_1']
-        for (i,j) in zip (List,range(10,110,20)):
+
+        for (i,j) in zip (self.List,range(10,110,20)):
             a = QLabel(i, self.showplaylist)
             a.move(10, j)
 
