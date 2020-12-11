@@ -4,6 +4,7 @@ from PyQt5 import QtCore, QtGui,QtWidgets
 from main import *
 
 import sys
+import os
 
 try:
     from html import escape
@@ -202,20 +203,21 @@ class Mp3Player(QWidget):
 
     def addList(self):
         self.files = QFileDialog.getOpenFileNames(self,'Select one or more files to open','','Sound (*.mp3 *.wav *.ogg *.flac *.wma)')
-        Str =str(self.files[0]).split("/")
-        Str1=Str[len(Str) -1].split(("."))
-        self.playlist.append(Str1[1])
-        cnt= len(self.files[0])
-        row= self.table.rowCount()
+        self.createPlaylist()
+        a = self.files[0]
+        path = a[0].split("music/")
+        self.playlist.append(path[1])
+        cnt = len(a)
+        row = self.table.rowCount()
         self.table.setRowCount(row + cnt)
         for i in range(row, row + cnt):
-            self.table.setItem(i,0,QTableWidgetItem(self.files[0][i-row]))
-        self.createPlaylist()
+            self.table.setItem(i, 0, QTableWidgetItem(path[1]))
 
     def createPlaylist(self):
         self.playlist.clear()
-        self.playlist.append(self.files[0])
-        print(self.playlist)
+        a=self.files[0]
+        path = a[0].split("music/")
+        self.playlist.append(path[1])
 
     def searchkeyword(self):
         text = self.search.text()
