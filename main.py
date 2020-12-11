@@ -20,7 +20,6 @@ class SliderProxyStyle(QProxyStyle):
 
 
 class Main(QWidget):
-
     def __init__(self):
         super().__init__()
         self.showplaylist = QDialog()
@@ -44,16 +43,13 @@ class Main(QWidget):
         self.count = 0
         self.bartimer = 0
         self.Play()
-
-
-
-
-
+        self.check = True
 
 
     def Play(self):
         #button,screen ...
         self.screen = QGroupBox()
+        self.screen.setStyleSheet("background:rgb(255,255,255)")
         self.label = QLabel(self.screen)
         self.label.move(120, 30)
         self.label.resize(700, 400)
@@ -205,13 +201,14 @@ class Main(QWidget):
             self.timer.stop()
             self.playbutton.setIcon(QtGui.QIcon('../AD-Project/icon/play.png'))
             self.playbutton.setIconSize(QtCore.QSize(60, 60))
+            self.check = True
         else:
             self.player.play()
             self.timer.start(100, self)
             self.playbutton.setIcon(QtGui.QIcon('../AD-Project/icon/stop.png'))
             self.playbutton.setIconSize(QtCore.QSize(60, 60))
             self.TTitle(self.currentidx)
-
+            self.check = False
 
     def nextClicked(self):
         self.step = 0
@@ -288,8 +285,11 @@ class Main(QWidget):
         self.playlist.setPlaybackMode(QMediaPlaylist.Loop)
 
     def openequalizer(self):
-        self.w = Window()
-        self.w.show()
+        if(self.check == False):
+            self.w = Window()
+            self.w.show()
+        else:
+            self.w.hide()
 
     """def playbarstart(self):
         self.ccount = 0
