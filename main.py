@@ -82,10 +82,6 @@ class Main(QWidget):
         self.playbutton.setIconSize(QtCore.QSize(60,60))
         self.playbutton.clicked.connect(self.playClicked)
 
-        #self.playbutton.clicked.connect(self.doAction) #playbutton클릭에 따른 signal
-        self.timer = QBasicTimer()
-        self.step = 0
-
         #next button
         self.nextbutton = QPushButton()
         self.nextbutton.setIcon(QtGui.QIcon('../AD-Project/icon/next.png'))
@@ -201,13 +197,6 @@ class Main(QWidget):
     def volumeChanged(self):
         self.player.setVolume(self.volume.value())
 
-    def timerEvent(self, e):
-        self.step = self.step + 1
-        self.playbar.setValue(self.step)
-        if self.step>=1000 :
-            self.step = 0 #재생바 종료
-            self.timer.stop()
-            return
 
     def ShowPLayList(self):
         for (i,j) in zip (self.List,range(10,110,20)):
@@ -236,16 +225,6 @@ class Main(QWidget):
 
     def closed(self,state):
         self.label.setVisible(state != Qt.Unchecked)
-
-    def playbartimer(self,a):
-        self.bartimer += 1
-        tr = threading.Timer(1, self.playbartimer, args=[a])
-        tr.start()
-
-        print(self.bartimer)
-        if self.bartimer == 10:
-            self.timer.stop()
-            tr.cancel()
 
     def currretloop(self):
         self.playlist.setPlaybackMode(QMediaPlaylist.CurrentItemInLoop)
