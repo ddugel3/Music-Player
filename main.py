@@ -17,7 +17,6 @@ class SliderProxyStyle(QProxyStyle):
             return 40
         return super().pixelMetric(metric, option, widget)
 
-
 class Main(QWidget):
     def __init__(self):
         super().__init__()
@@ -33,8 +32,6 @@ class Main(QWidget):
             k = "../AD-Project/music/" + name
             Qurlmusic.append(k)
             self.playlist.addMedia(QMediaContent(self.k))"""
-
-
 
         self.a = QUrl.fromLocalFile('../AD-Project/music/stay-PostMalon.wav')
         self.b = QUrl.fromLocalFile('../AD-Project/music/잠이 오질 않네요-장범준.wav')
@@ -54,7 +51,6 @@ class Main(QWidget):
         self.Play()
         self.check = True
 
-
     def Play(self):
         #button,screen ...
         self.screen = QGroupBox()
@@ -70,8 +66,6 @@ class Main(QWidget):
         self.title.setReadOnly(True)
         self.title.setMaxLength(1000)
         self.title.setFont(QtGui.QFont("Arial", 20, QtGui.QFont.Bold))
-
-
 
         # repeat button
         self.replaybutton = QPushButton()
@@ -91,26 +85,21 @@ class Main(QWidget):
         self.playbar.setFont(QtGui.QFont('Arial',22))
         self.playbar.setStyleSheet("QProgressBar::chunk {background-color:rgb(0,0,0)}")
 
-
         #playbutton
         self.playbutton = QPushButton()
         self.playbutton.setIcon(QtGui.QIcon('../AD-Project/icon/play.png'))
         self.playbutton.setIconSize(QtCore.QSize(60,60))
         self.playbutton.clicked.connect(self.playClicked)
 
-
         #self.playbutton.clicked.connect(self.doAction) #playbutton클릭에 따른 signal
         self.timer = QBasicTimer()
         self.step = 0
-
-
 
         #next button
         self.nextbutton = QPushButton()
         self.nextbutton.setIcon(QtGui.QIcon('../AD-Project/icon/next.png'))
         self.nextbutton.setIconSize(QtCore.QSize(80,60))
         self.nextbutton.clicked.connect(self.nextClicked)
-
 
         #back button
         self.backbutton = QPushButton()
