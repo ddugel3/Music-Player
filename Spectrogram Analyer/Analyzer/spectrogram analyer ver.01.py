@@ -10,13 +10,12 @@ img_hsv = cv2.cvtColor(img_color, cv2.COLOR_BGR2HSV) # cvtColor 함수를 이용
 lower_yellow = (0,100, 100) # hsv 이미지에서 바이너리 이미지로 생성 , 적당한 값 30
 upper_yellow = (30, 255, 255)
 """(BGR)"""
+
 """
 lower_blue = (100, 100, 100) # hsv 이미지에서 바이너리 이미지로 생성 , 적당한 값 30
 upper_blue = (255, 150, 255)
 
 """
-
-
 
 """img_mask = cv2.inRange(img_hsv, lower_blue, upper_blue) # 범위내의 픽셀들은 흰색, 나머지 검은색"""
 

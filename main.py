@@ -4,7 +4,6 @@ import time
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5 import QtGui
-from PyQt5 import QtCore
 from PyQt5.QtMultimedia import QMediaPlaylist, QMediaPlayer, QMediaContent
 from demo_pyqt5 import *
 
@@ -21,39 +20,21 @@ class SliderProxyStyle(QProxyStyle):
 class Main(QWidget):
     def __init__(self):
         super().__init__()
-        self.List = ['stay-PostMalon', '잠이 오질 않네요-장범준', 'Piano-melody_2', 'STAY-BLACKPINK', 'Piano-melody_1']
+        self.List = ['stay-PostMalon', '잠이 오질 않네요-장범준', 'STAY-BLACKPINK', 'Piano-melody_1','Piano-melody_3']
         self.showplaylist = QDialog()
         self.currentidx = 0
         self.playlist = QMediaPlaylist()
-        self.list = ['../AD-Project/music/stay.wav','../AD-Project/music/잠이 오질 않네요.wav',
-                     '../AD-Project/music/Piano-melody_2.mp3','../AD-Project/music/STAY.wav',
-                     '../AD-Project/music/Piano-melody_1.wav']
         Qurlmusic = []
-        """for name in self.List:
-            k = "../AD-Project/music/" + name
-            Qurlmusic.append(k)
-            self.playlist.addMedia(QMediaContent(self.k))"""
-
-
-
-        self.a = QUrl.fromLocalFile('../AD-Project/music/stay-PostMalon.wav')
-        self.b = QUrl.fromLocalFile('../AD-Project/music/잠이 오질 않네요-장범준.wav')
-        self.c = QUrl.fromLocalFile('../AD-Project/music/Piano-melody_2.mp3')
-        self.d = QUrl.fromLocalFile('../AD-Project/music/STAY-BLACKPINK.wav')
-        self.e = QUrl.fromLocalFile('../AD-Project/music/Piano-melody_1.wav')
-        
-        self.playlist.addMedia(QMediaContent(self.a))
-        self.playlist.addMedia(QMediaContent(self.b))
-        self.playlist.addMedia(QMediaContent(self.c))
-        self.playlist.addMedia(QMediaContent(self.d))
-        self.playlist.addMedia(QMediaContent(self.e))
+        for name in self.List:
+            k = "../AD-Project/music/" + name + ".wav"
+            Qurlmusic.append(QUrl.fromLocalFile(k))
+            #print(Qurlmusic[-1])
+            self.playlist.addMedia(QMediaContent(Qurlmusic[-1]))
         self.player = QMediaPlayer()
         self.player.setPlaylist(self.playlist)
-        self.count = 0
         self.bartimer = 0
         self.Play()
         self.check = True
-
 
     def Play(self):
         #button,screen ...
@@ -70,8 +51,6 @@ class Main(QWidget):
         self.title.setReadOnly(True)
         self.title.setMaxLength(1000)
         self.title.setFont(QtGui.QFont("Arial", 20, QtGui.QFont.Bold))
-
-
 
         # repeat button
         self.replaybutton = QPushButton()
@@ -98,12 +77,9 @@ class Main(QWidget):
         self.playbutton.setIconSize(QtCore.QSize(60,60))
         self.playbutton.clicked.connect(self.playClicked)
 
-
         #self.playbutton.clicked.connect(self.doAction) #playbutton클릭에 따른 signal
         self.timer = QBasicTimer()
         self.step = 0
-
-
 
         #next button
         self.nextbutton = QPushButton()
@@ -111,13 +87,11 @@ class Main(QWidget):
         self.nextbutton.setIconSize(QtCore.QSize(80,60))
         self.nextbutton.clicked.connect(self.nextClicked)
 
-
         #back button
         self.backbutton = QPushButton()
         self.backbutton.setIcon(QtGui.QIcon('../AD-Project/icon/back.png'))
         self.backbutton.setIconSize(QtCore.QSize(80,60))
         self.backbutton.clicked.connect(self.prevClicked)
-
 
         #out button
         outbutton = QPushButton()
@@ -191,18 +165,11 @@ class Main(QWidget):
         self.setGeometry(500, 200, 1000, 700)
         self.show()
 
-
-
-
     def Out(self):
         self.close()
 
-
     def TTitle(self,idx):
-        Str = str(self.list[idx]).split("/")
-        Str1 = Str[len(Str) - 1].split('.')
-        self.title.setText('{}'.format(Str1[0]))
-
+        self.title.setText('{}'.format(self.List[idx]))
 
     def playClicked(self):
         if self.player.state() == QMediaPlayer.PlayingState:
@@ -227,7 +194,6 @@ class Main(QWidget):
             self.timer.start(100, self)
         self.playlist.next()
 
-
     def prevClicked(self):
         self.step = 0
         self.currentidx -= 1
@@ -248,7 +214,6 @@ class Main(QWidget):
             return
 
     def ShowPLayList(self):
-
         for (i,j) in zip (self.List,range(10,110,20)):
             a = QLabel(i, self.showplaylist)
             a.move(10, j)
@@ -289,7 +254,7 @@ class Main(QWidget):
         self.playlist.setPlaybackMode(QMediaPlaylist.CurrentItemInLoop)
 
     def loop(self):
-        self.playlist.setPlaybackMode(QMediaPlaylist.Loop)
+        self.playList.setPlaybackMode(QMediaPlaylist.Loop)
 
     def openequalizer(self):
         if(self.check == False):

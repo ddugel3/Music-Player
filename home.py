@@ -1,10 +1,7 @@
 from PyQt5.QtWidgets import (QWidget, QPushButton, QHBoxLayout, QFrame, QTableWidget,QHeaderView, QTableWidgetItem, QVBoxLayout, QApplication,
                              QLabel,QLineEdit, QGroupBox, QFileDialog, QMainWindow, QStyledItemDelegate)
-from PyQt5 import QtCore, QtGui,QtWidgets
 from main import *
-
 import sys
-
 try:
     from html import escape
 except ImportError:
@@ -60,7 +57,6 @@ class HTMLDelegate(QStyledItemDelegate):
         if index.column() != 0:
             textRect.adjust(5,0,0,0,0)
 
-
         painter.translate(textRect.topLeft())
         painter.setClipRect(textRect.translated(-textRect.topLeft()))
         self.doc.documentLayout().draw(painter, ctx)
@@ -93,15 +89,12 @@ class Mp3Player(QWidget):
         font = self.search.font()
         font.setPointSize(20)
         self.setFont(font)
-
         self.search.setText("")
 
         self.searchbutton = QPushButton() #검색
         self.searchbutton.setIcon(QtGui.QIcon('icon/search.png'))
         self.searchbutton.setIconSize(QtCore.QSize(40,40))
         self.searchbutton.clicked.connect(self.searchkeyword)
-
-
 
         closebutton = QPushButton()#종료버튼
         closebutton.setIcon(QtGui.QIcon('icon/x.png'))
@@ -159,7 +152,6 @@ class Mp3Player(QWidget):
         v2box.addLayout(v2_2box)
         v2box.addLayout(v2_3box)
 
-
         v2_1box.addWidget(closebutton)
         v2_1box.addStretch(1)
 
@@ -178,44 +170,45 @@ class Mp3Player(QWidget):
         self.show()
 
     def setTableData(self):
-        self.table.setItem(0,0,QTableWidgetItem("Make a wish.mp3"))
-        self.table.setItem(0,1,QTableWidgetItem("cheer up.mp3"))
-        self.table.setItem(0,2,QTableWidgetItem("snowman.mp3"))
-        self.table.setItem(0,3,QTableWidgetItem("santa tell me.mp3"))
-        self.table.setItem(0,4,QTableWidgetItem("text me merry chirstmas.mp3"))
-        self.table.setItem(0,5,QTableWidgetItem("black out.mp3"))
-        self.table.setItem(0,6,QTableWidgetItem("perhaps love.mp3"))
-        self.table.setItem(0,7,QTableWidgetItem("fly.mp3"))
-        self.table.setItem(0,8,QTableWidgetItem("what are we.mp3"))
-        self.table.setItem(0,9,QTableWidgetItem("thunder.mp3"))
-        self.table.setItem(0,10,QTableWidgetItem("adios.mp3"))
-        self.table.setItem(0,11,QTableWidgetItem("RBB.mp3"))
-        self.table.setItem(0,12,QTableWidgetItem("aside.mp3"))
-        self.table.setItem(0,13,QTableWidgetItem("hug.mp3"))
-        self.table.setItem(0,14,QTableWidgetItem("savage love.mp3"))
-        self.table.setItem(0,15,QTableWidgetItem("my page.mp3"))
-        self.table.setItem(0,16,QTableWidgetItem("square.mp3"))
-        self.table.setItem(0,17,QTableWidgetItem("welcome to my playground.mp3"))
-        self.table.setItem(0,18,QTableWidgetItem("i can't stop me.mp3"))
-        self.table.setItem(0,19,QTableWidgetItem("what is love?.mp3"))
-        self.table.setItem(0,20,QTableWidgetItem("solo.mp3"))
+        self.table.setItem(0,0,QTableWidgetItem("Make a wish.wav"))
+        self.table.setItem(0,1,QTableWidgetItem("cheer up.wav"))
+        self.table.setItem(0,2,QTableWidgetItem("snowman.wav"))
+        self.table.setItem(0,3,QTableWidgetItem("santa tell me.wav"))
+        self.table.setItem(0,4,QTableWidgetItem("text me merry chirstmas.wav"))
+        self.table.setItem(0,5,QTableWidgetItem("black out.wav"))
+        self.table.setItem(0,6,QTableWidgetItem("perhaps love.wav"))
+        self.table.setItem(0,7,QTableWidgetItem("fly.wav"))
+        self.table.setItem(0,8,QTableWidgetItem("what are we.wav"))
+        self.table.setItem(0,9,QTableWidgetItem("thunder.wav"))
+        self.table.setItem(0,10,QTableWidgetItem("adios.wav"))
+        self.table.setItem(0,11,QTableWidgetItem("RBB.wav"))
+        self.table.setItem(0,12,QTableWidgetItem("aside.wav"))
+        self.table.setItem(0,13,QTableWidgetItem("hug.wav"))
+        self.table.setItem(0,14,QTableWidgetItem("savage love.wav"))
+        self.table.setItem(0,15,QTableWidgetItem("my page.wav"))
+        self.table.setItem(0,16,QTableWidgetItem("square.wav"))
+        self.table.setItem(0,17,QTableWidgetItem("welcome to my playground.wav"))
+        self.table.setItem(0,18,QTableWidgetItem("i can't stop me.wav"))
+        self.table.setItem(0,19,QTableWidgetItem("what is love?.wav"))
+        self.table.setItem(0,20,QTableWidgetItem("solo.wav"))
 
     def addList(self):
         self.files = QFileDialog.getOpenFileNames(self,'Select one or more files to open','','Sound (*.mp3 *.wav *.ogg *.flac *.wma)')
-        Str =str(self.files[0]).split("/")
-        Str1=Str[len(Str) -1].split(("."))
-        self.playlist.append(Str1[1])
-        cnt= len(self.files[0])
-        row= self.table.rowCount()
+        self.createPlaylist()
+        a = self.files[0]
+        path = a[0].split("music/")
+        self.playlist.append(path[1])
+        cnt = len(a)
+        row = self.table.rowCount()
         self.table.setRowCount(row + cnt)
         for i in range(row, row + cnt):
-            self.table.setItem(i,0,QTableWidgetItem(self.files[0][i-row]))
-        self.createPlaylist()
+            self.table.setItem(i, 0, QTableWidgetItem(path[1]))
 
     def createPlaylist(self):
         self.playlist.clear()
-        self.playlist.append(self.files[0])
-        print(self.playlist)
+        a=self.files[0]
+        path = a[0].split("music/")
+        self.playlist.append(path[1])
 
     def searchkeyword(self):
         text = self.search.text()

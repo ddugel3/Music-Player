@@ -2,13 +2,11 @@ from PyQt5 import QtCore, QtWidgets
 from equalizer_bar import EqualizerBar
 
 import random
-import sys
 
 class Window(QtWidgets.QMainWindow):
 
     def __init__(self):
         super().__init__()
-
         self.equalizer = EqualizerBar(5, ['#0C0786', '#40039C', '#6A00A7', '#8F0DA3', '#B02A8F', '#CA4678', '#E06461',
                                           '#F1824C', '#FCA635', '#FCCC25', '#EFF821'])
         self.setCentralWidget(self.equalizer)
@@ -24,8 +22,3 @@ class Window(QtWidgets.QMainWindow):
             min(100, v+random.randint(0, 50) if random.randint(0, 5) > 2 else v)
             for v in self.equalizer.values()
             ])
-
-"""if __name__ == '__main__':
-    app = QtWidgets.QApplication(sys.argv)
-    main = Window()
-    sys.exit(app.exec_())"""

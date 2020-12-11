@@ -5,7 +5,6 @@ from PyQt5.QtCore import pyqtSignal as Signal
 
 
 class EqualizerBar(QtWidgets.QWidget):
-
     def __init__(self, bars, steps, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -13,7 +12,6 @@ class EqualizerBar(QtWidgets.QWidget):
             QtWidgets.QSizePolicy.MinimumExpanding,
             QtWidgets.QSizePolicy.MinimumExpanding
        )
-
         if isinstance(steps, list):
             # list of colours.
             self.n_steps = len(steps)
@@ -23,7 +21,6 @@ class EqualizerBar(QtWidgets.QWidget):
             # int number of bars, defaults to red.
             self.n_steps = steps
             self.steps = ['red'] * steps
-
         else:
             raise TypeError('steps must be a list or int')
 
@@ -70,11 +67,9 @@ class EqualizerBar(QtWidgets.QWidget):
         bar_width_space = step_x * (1 - self._y_solid_percent) / 2
 
         for b in range(self.n_bars):
-
             # Calculate the y-stop position for this bar, from the value in range.
             pc = (self._values[b] - self._vmin) / (self._vmax - self._vmin)
             n_steps_to_draw = int(pc * self.n_steps)
-
             for n in range(n_steps_to_draw):
                 brush.setColor(QtGui.QColor(self.steps[n]))
                 rect = QtCore.QRect(
@@ -84,7 +79,6 @@ class EqualizerBar(QtWidgets.QWidget):
                     bar_height
                 )
                 painter.fillRect(rect, brush)
-
         painter.end()
 
     def sizeHint(self):
@@ -133,16 +127,13 @@ class EqualizerBar(QtWidgets.QWidget):
         self.steps = colors
         self.update()
 
-
     def setBarPadding(self, i):
         self._padding = int(i)
         self.update()
 
-
     def setBarSolidPercent(self, f):
         self._bar_solid_percent = float(f)
         self.update()
-
 
     def setBackgroundColor(self, color):
         self._background_color = QtGui.QColor(color)
