@@ -16,7 +16,6 @@ class SliderProxyStyle(QProxyStyle):
             return 40
         return super().pixelMetric(metric, option, widget)
 
-
 class Main(QWidget):
     def __init__(self):
         super().__init__()
@@ -25,6 +24,7 @@ class Main(QWidget):
         self.currentidx = 0
         self.playlist = QMediaPlaylist()
         Qurlmusic = []
+
         for name in self.List:
             k = "../AD-Project/music/" + name + ".wav"
             Qurlmusic.append(QUrl.fromLocalFile(k))
@@ -69,7 +69,6 @@ class Main(QWidget):
         self.playbar.setFormat(" ")
         self.playbar.setFont(QtGui.QFont('Arial',22))
         self.playbar.setStyleSheet("QProgressBar::chunk {background-color:rgb(0,0,0)}")
-
 
         #playbutton
         self.playbutton = QPushButton()

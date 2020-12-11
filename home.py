@@ -2,6 +2,8 @@ from PyQt5.QtWidgets import (QWidget, QPushButton, QHBoxLayout, QFrame, QTableWi
                              QLabel,QLineEdit, QGroupBox, QFileDialog, QMainWindow, QStyledItemDelegate)
 from main import *
 import sys
+import os
+
 try:
     from html import escape
 except ImportError:
