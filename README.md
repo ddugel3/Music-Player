@@ -1,8 +1,10 @@
 # AD Project
  AD Project - H팀
-
+ PyQt5를 이용해 Music Player 제작
+ 
+ 
+ 
 # 참고 문헌
-
 ### 논문, 블로그, 레퍼런스 
  - 코드 작성중 사용한 모든 참고 문헌 링크 저장
  
