@@ -28,7 +28,7 @@ class EqualizerBar(QtWidgets.QWidget):
         self.n_bars = bars
         self._x_solid_percent = 0.8
         self._y_solid_percent = 0.8
-        self._background_color = QtGui.QColor('white')
+        self._background_color = QtGui.QColor('black')
         self._padding = 25  # n-pixel gap around edge.
 
         # Bar behaviour

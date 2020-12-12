@@ -87,12 +87,14 @@ class Main(QWidget):
         self.nextbutton.setIcon(QtGui.QIcon('../AD-Project/icon/next.png'))
         self.nextbutton.setIconSize(QtCore.QSize(80,60))
         self.nextbutton.clicked.connect(self.nextClicked)
+        self.nextbutton.clicked.connect(self.openequalizer)
 
         #back button
         self.backbutton = QPushButton()
         self.backbutton.setIcon(QtGui.QIcon('../AD-Project/icon/back.png'))
         self.backbutton.setIconSize(QtCore.QSize(80,60))
         self.backbutton.clicked.connect(self.prevClicked)
+        self.backbutton.clicked.connect(self.openequalizer)
 
         #out button
         outbutton = QPushButton()
