@@ -100,7 +100,7 @@ class Main(QWidget):
         outbutton = QPushButton()
         outbutton.setIcon(QtGui.QIcon('icon/out.png'))
         outbutton.setIconSize(QtCore.QSize(50,50))
-        outbutton.clicked.connect(self.Out)
+        outbutton.clicked.connect(self.Out)     
 
         # volume
         self.volume = QSlider(QtCore.Qt.Vertical)
