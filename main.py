@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5 import QtGui
 from PyQt5.QtMultimedia import QMediaPlaylist, QMediaPlayer, QMediaContent
-from demo_pyqt5 import *
+from Equalizer import *
 
 #volume에서 handle 크기 조정
 class SliderProxyStyle(QProxyStyle):
