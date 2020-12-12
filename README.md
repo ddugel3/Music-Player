@@ -1,6 +1,6 @@
 # AD Project
- AD Project - H팀
- ##PyQt5를 이용해 Music Player 제작
+ - AD Project - H팀
+ - PyQt5를 이용해 Music Player 제작
  
  
  
