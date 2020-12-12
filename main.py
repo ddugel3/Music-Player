@@ -26,7 +26,7 @@ class Main(QWidget):
         Qurlmusic = []
 
         for name in self.List:
-            k = "../AD-Project/music/" + name + ".wav"
+            k = "music/" + name + ".wav"
             Qurlmusic.append(QUrl.fromLocalFile(k))
             #print(Qurlmusic[-1])
             self.playlist.addMedia(QMediaContent(Qurlmusic[-1]))
@@ -47,7 +47,7 @@ class Main(QWidget):
         self.screen.setStyleSheet("background:rgb(255,255,255)")
         self.label = QLabel(self.screen)
         self.label.move(200, 80)
-        self.movie = QtGui.QMovie("../AD-Project/icon/loading2.gif")
+        self.movie = QtGui.QMovie("icon/loading2.gif")
         self.label.setMovie(self.movie)
         self.label.setScaledContents(True)
         self.movie.start()
@@ -59,13 +59,13 @@ class Main(QWidget):
 
         # repeat button
         self.replaybutton = QPushButton()
-        self.replaybutton.setIcon(QtGui.QIcon('../AD-Project/icon/repeatone.png'))
+        self.replaybutton.setIcon(QtGui.QIcon('icon/repeatone.png'))
         self.replaybutton.setIconSize(QtCore.QSize(35,35))
         self.replaybutton.clicked.connect(self.currretloop)
 
         # random button
         self.randombutton = QPushButton()
-        self.randombutton.setIcon(QtGui.QIcon('../AD-Project/icon/repeat.png'))
+        self.randombutton.setIcon(QtGui.QIcon('icon/repeat.png'))
         self.randombutton.setIconSize(QtCore.QSize(35,35))
         self.randombutton.clicked.connect(self.loop)
 
@@ -78,27 +78,27 @@ class Main(QWidget):
 
         #playbutton
         self.playbutton = QPushButton()
-        self.playbutton.setIcon(QtGui.QIcon('../AD-Project/icon/play.png'))
+        self.playbutton.setIcon(QtGui.QIcon('icon/play.png'))
         self.playbutton.setIconSize(QtCore.QSize(60,60))
         self.playbutton.clicked.connect(self.playClicked)
 
         #next button
         self.nextbutton = QPushButton()
-        self.nextbutton.setIcon(QtGui.QIcon('../AD-Project/icon/next.png'))
+        self.nextbutton.setIcon(QtGui.QIcon('icon/next.png'))
         self.nextbutton.setIconSize(QtCore.QSize(80,60))
         self.nextbutton.clicked.connect(self.nextClicked)
         self.nextbutton.clicked.connect(self.openequalizer)
 
         #back button
         self.backbutton = QPushButton()
-        self.backbutton.setIcon(QtGui.QIcon('../AD-Project/icon/back.png'))
+        self.backbutton.setIcon(QtGui.QIcon('icon/back.png'))
         self.backbutton.setIconSize(QtCore.QSize(80,60))
         self.backbutton.clicked.connect(self.prevClicked)
         self.backbutton.clicked.connect(self.openequalizer)
 
         #out button
         outbutton = QPushButton()
-        outbutton.setIcon(QtGui.QIcon('../AD-Project/icon/out.png'))
+        outbutton.setIcon(QtGui.QIcon('icon/out.png'))
         outbutton.setIconSize(QtCore.QSize(50,50))
         outbutton.clicked.connect(self.Out)
 
@@ -114,7 +114,7 @@ class Main(QWidget):
 
         # lyricsbutton
         self.lyricsbutton = QPushButton()
-        self.lyricsbutton.setIcon(QtGui.QIcon('../AD-Project/icon/lyrics.png'))
+        self.lyricsbutton.setIcon(QtGui.QIcon('icon/lyrics.png'))
         self.lyricsbutton.setIconSize(QtCore.QSize(50,50))
         self.lyricsbutton.clicked.connect(self.ShowPLayList)
 
@@ -174,12 +174,12 @@ class Main(QWidget):
     def playClicked(self):
         if self.player.state() == QMediaPlayer.PlayingState:
             self.player.pause()
-            self.playbutton.setIcon(QtGui.QIcon('../AD-Project/icon/play.png'))
+            self.playbutton.setIcon(QtGui.QIcon('icon/play.png'))
             self.playbutton.setIconSize(QtCore.QSize(60, 60))
             self.check = True
         else:
             self.player.play()
-            self.playbutton.setIcon(QtGui.QIcon('../AD-Project/icon/stop.png'))
+            self.playbutton.setIcon(QtGui.QIcon('icon/stop.png'))
             self.playbutton.setIconSize(QtCore.QSize(60, 60))
             self.TTitle(self.currentidx)
             self.check = False
